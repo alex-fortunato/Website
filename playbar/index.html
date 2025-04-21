@@ -31,27 +31,34 @@
       </div>
 
       <div class="controls">
-        <button class="play-button" id="playBtn">▶</button>
         <input
-          type="file"
-          id="audioUpload"
-          accept="audio/*"
-          style="display: none"
+                type="file"
+                id="audioUpload"
+                accept="audio/*"
+                style="display: none"
         />
         <button id="uploadBtn" style="margin-right: 10px">Upload Audio</button>
-        <span id="volumeLabel">Volume:</span>
+  <span id="volumeIcon" class="volume-icon">
+  <img id="volumeImage" src="assets/volume-icon-quiet.svg" alt="Volume Icon" width="20" height="20" />
+</span>
+
+  </span>
+
         <input
-          type="range"
-          id="volumeControl"
-          min="0"
-          max="1"
-          step="0.1"
-          value="0.7"
-          style="margin-left: 5px"
+                type="range"
+                id="volumeControl"
+                min="0"
+                max="1"
+                step="0.1"
+                value="0.7"
+                style="margin-left: 5px"
         />
       </div>
 
+      </div>
+
       <div class="visualization-container">
+        <button class="play-button" id="playBtn">▶</button>
         <canvas id="waveformCanvas"></canvas>
       </div>
 
@@ -98,6 +105,32 @@
         <div class="setting-row">
           <span class="setting-label">Bar spacing:</span>
           <input type="number" id="barSpacing" value="1" min="0" max="10" />
+        </div>
+
+        <div class="setting-row">
+          <span class="setting-label">Sensitivity:</span>
+          <input
+            type="range"
+            id="sensitivityControl"
+            min="1"
+            max="20"
+            step="1"
+            value="10"
+          />
+          <span id="sensitivityValue" class="setting-value">10</span>
+        </div>
+
+        <div class="setting-row">
+          <span class="setting-label">Minimum bar height:</span>
+          <input
+            type="range"
+            id="minHeightControl"
+            min="0"
+            max="10"
+            step="0.5"
+            value="1"
+          />
+          <span id="minHeightValue" class="setting-value">1</span>
         </div>
       </div>
     </div>

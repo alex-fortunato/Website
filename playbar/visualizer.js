@@ -1,9 +1,29 @@
+// First, let's add a function to update the volume icon based on current volume level
+function updateVolumeIcon(volume) {
+  const volumeImage = document.getElementById('volumeImage');
+
+  // Convert to number to ensure proper comparison (in case it's a string value)
+  const volumeValue = Number(volume);
+
+  if (volumeValue === 0) {
+    volumeImage.src = "assets/volume-icon-silent.svg";
+  } else if (volumeValue <= 0.5) {
+    volumeImage.src = "assets/volume-icon-quiet.svg";
+  } else {
+    volumeImage.src = "assets/volume-icon-loud.svg";
+  }
+
+  console.log("Volume updated:", volumeValue, "Icon:", volumeImage.src);
+}
+
+// Now let's find where to call this function in the existing code
+
 // Draw live visualization during playback
 function drawLiveVisualization(
-  dataArray,
-  barWidth,
-  sensitivityFactor,
-  progressPosition,
+    dataArray,
+    barWidth,
+    sensitivityFactor,
+    progressPosition,
 ) {
   const bufferLength = analyser.frequencyBinCount;
   const barColor = barColorPicker.value;
@@ -25,7 +45,11 @@ function drawLiveVisualization(
     }
 
     // Apply sensitivity factor to bar height
-    const barHeight = (value / 255) * (canvas.height / 2) * sensitivityFactor;
+    const calculatedHeight =
+        (value / 255) * (canvas.height / 2) * (sensitivity / 5);
+
+    // Apply minimum height - ensures bars are always visible
+    const barHeight = Math.max(calculatedHeight, minBarHeight);
 
     const x = i * (barWidth + barSpacing);
 
@@ -51,7 +75,8 @@ let isPlaying = false;
 let animationId;
 let barCount = 200; // Fixed at 200 as requested
 let barSpacing = 1;
-let sensitivity = 9; // Fixed at highest setting (10)
+let sensitivity = 10; // Now adjustable with the slider
+let minBarHeight = 1; // Minimum bar height to ensure visibility
 let staticWaveformData = null; // Store the pre-analyzed waveform data
 
 // Canvas setup
@@ -69,13 +94,15 @@ const volumeControl = document.getElementById("volumeControl");
 // Customization options
 const barColorPicker = document.getElementById("barColor");
 const progressColorPicker = document.getElementById("progressColor");
-const bgColorPicker = document.getElementById("bgColor");
 const barSpacingInput = document.getElementById("barSpacing");
+const sensitivityControl = document.getElementById("sensitivityControl");
+const sensitivityValue = document.getElementById("sensitivityValue");
+const minHeightControl = document.getElementById("minHeightControl");
+const minHeightValue = document.getElementById("minHeightValue");
 
-// Set default colors
+// Set default colors for dark theme
 barColorPicker.value = "#FF0000"; // Red for waveform
-progressColorPicker.value = "#000000"; // Black for progress
-bgColorPicker.value = "#FFFFFF"; // White for background
+progressColorPicker.value = "#FFFFFF"; // White for progress
 
 // Initialize audio context on page load
 function initAudio() {
@@ -97,10 +124,14 @@ function initAudio() {
     // Set up volume control
     volumeControl.addEventListener("input", function () {
       audioElement.volume = volumeControl.value;
+      // Update volume icon when user changes volume
+      updateVolumeIcon(volumeControl.value);
     });
 
     // Initial volume
     audioElement.volume = volumeControl.value;
+    // Initialize volume icon based on initial volume
+    updateVolumeIcon(volumeControl.value);
   }
 }
 
@@ -137,9 +168,9 @@ async function analyzeAudio() {
   try {
     // Create a temporary offline audio context for analysis
     const offlineCtx = new OfflineAudioContext(
-      1, // Single channel for analysis
-      audioElement.duration * audioContext.sampleRate,
-      audioContext.sampleRate,
+        1, // Single channel for analysis
+        audioElement.duration * audioContext.sampleRate,
+        audioContext.sampleRate,
     );
 
     // Fetch the audio file
@@ -198,9 +229,9 @@ async function analyzeAudio() {
     if (!staticWaveformData) {
       // Create a simple default waveform if we can't analyze
       staticWaveformData = new Array(barCount).fill(0).map(
-        () =>
-          // Random values between 10 and 50 to show a minimal waveform
-          Math.random() * 40 + 10,
+          () =>
+              // Random values between 10 and 50 to show a minimal waveform
+              Math.random() * 40 + 10,
       );
       drawStaticWaveform();
     }
@@ -213,9 +244,8 @@ function drawStaticWaveform() {
 
   resizeCanvas();
 
-  // Clear the canvas
-  ctx.fillStyle = bgColorPicker.value;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Clear the canvas with transparent background instead of using bgColor
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Calculate bar width based on canvas width and bar count
   const usableWidth = canvas.width - barSpacing * (barCount - 1);
@@ -234,12 +264,12 @@ function drawStaticWaveform() {
     // Calculate progress position
     let progressPosition = 0;
     if (
-      audioElement &&
-      !isNaN(audioElement.duration) &&
-      audioElement.duration > 0
+        audioElement &&
+        !isNaN(audioElement.duration) &&
+        audioElement.duration > 0
     ) {
       progressPosition =
-        (audioElement.currentTime / audioElement.duration) * canvas.width;
+          (audioElement.currentTime / audioElement.duration) * canvas.width;
     }
 
     // Determine if this bar is in the played section
@@ -269,9 +299,8 @@ function drawVisualization() {
   // Get frequency data from the audio - this is what makes the visualization dynamic
   analyser.getByteFrequencyData(dataArray);
 
-  // Clear the canvas
-  ctx.fillStyle = bgColorPicker.value;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Clear the canvas with transparent background
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Update time displays
   updateTimeDisplays();
@@ -286,20 +315,20 @@ function drawVisualization() {
   // Calculate the progress position
   let progressPosition = 0;
   if (
-    audioElement &&
-    !isNaN(audioElement.duration) &&
-    audioElement.duration > 0
+      audioElement &&
+      !isNaN(audioElement.duration) &&
+      audioElement.duration > 0
   ) {
     progressPosition =
-      (audioElement.currentTime / audioElement.duration) * canvas.width;
+        (audioElement.currentTime / audioElement.duration) * canvas.width;
   }
 
   // Use real-time frequency data for the visualization during playback
   drawLiveVisualization(
-    dataArray,
-    barWidth,
-    sensitivityFactor,
-    progressPosition,
+      dataArray,
+      barWidth,
+      sensitivityFactor,
+      progressPosition,
   );
 }
 
@@ -326,8 +355,8 @@ function drawBars(dataArray, barWidth, sensitivityFactor, progressPosition) {
 
     // Apply sensitivity factor to bar height - ensure we have visible bars
     const barHeight = Math.max(
-      (value / 255) * (canvas.height / 2) * sensitivityFactor,
-      1,
+        (value / 255) * (canvas.height / 2) * sensitivityFactor,
+        1,
     );
 
     const x = i * (barWidth + barSpacing);
@@ -398,6 +427,8 @@ async function loadAudioFile(file) {
     audioSource.connect(analyser);
     analyser.connect(audioContext.destination);
     audioElement.volume = volumeControl.value;
+    // Update volume icon based on current volume when loading a new file
+    updateVolumeIcon(volumeControl.value);
   }
 
   // Reset state
@@ -406,8 +437,8 @@ async function loadAudioFile(file) {
 
   // Show file name
   document.querySelector(".song-title").textContent = file.name.replace(
-    /\.[^/.]+$/,
-    "",
+      /\.[^/.]+$/,
+      "",
   );
   document.querySelector(".song-artist").textContent = "Local File";
 
@@ -481,10 +512,51 @@ canvas.addEventListener("mousemove", function () {
 // Settings change events
 barColorPicker.addEventListener("input", updateSettings);
 progressColorPicker.addEventListener("input", updateSettings);
-bgColorPicker.addEventListener("input", updateSettings);
 barSpacingInput.addEventListener("input", updateSettings);
 
-// Initialize audio context and canvas when document is loaded
+// Add event listener for sensitivity control
+sensitivityControl.addEventListener("input", function() {
+  sensitivity = parseFloat(sensitivityControl.value);
+  sensitivityValue.textContent = sensitivity;
+
+  // Redraw static waveform if not playing
+  if (!isPlaying && staticWaveformData) {
+    drawStaticWaveform();
+  }
+});
+
+// Add event listener for minimum height control
+minHeightControl.addEventListener("input", function() {
+  minBarHeight = parseFloat(minHeightControl.value);
+  minHeightValue.textContent = minBarHeight;
+
+  // Redraw static waveform if not playing
+  if (!isPlaying && staticWaveformData) {
+    drawStaticWaveform();
+  }
+});
+
+// Add click functionality to volume icon
+document.getElementById('volumeIcon').addEventListener('click', function() {
+  // Toggle mute
+  if (audioElement) {
+    if (audioElement.volume > 0) {
+      // Store the current volume before muting
+      audioElement.dataset.prevVolume = audioElement.volume;
+      audioElement.volume = 0;
+      volumeControl.value = 0;
+    } else {
+      // Restore previous volume or default to 0.7
+      const prevVolume = audioElement.dataset.prevVolume || 0.7;
+      audioElement.volume = prevVolume;
+      volumeControl.value = prevVolume;
+    }
+    // Update the volume icon
+    updateVolumeIcon(audioElement.volume);
+  }
+});
+
+// Initialize audio context when document is loaded
 document.addEventListener("DOMContentLoaded", async function () {
   // Initialize canvas
   resizeCanvas();
@@ -492,7 +564,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Initialize audio
   initAudio();
 
-  // Preload with your audio file - use fetch to handle it as a real URL
+  // Preload with your audio file
   audioElement = new Audio();
   audioElement.src = "AF_BullFight_Mockup_Master.wav";
   audioElement.crossOrigin = "anonymous";
@@ -513,7 +585,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Error analyzing audio:", err);
       // Show a message to the user suggesting to upload a file if preload fails
       document.querySelector(".song-title").textContent =
-        "Upload an audio file";
+          "Upload an audio file";
       document.querySelector(".song-artist").textContent = "No audio loaded";
     }
   });
@@ -528,6 +600,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Error reconnecting audio:", err);
     }
   }
+
+  // Initialize volume icon
+  updateVolumeIcon(volumeControl.value);
 });
 
 // Initialize canvas and handle resizing
