@@ -1,7 +1,7 @@
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: 0;
   padding: 20px;
   display: flex;
@@ -83,106 +83,115 @@ body {
   margin-top: 5px;
 }
 
+/* Updated visualization layout for wider waveform */
+.visualization-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
 .visualization-container {
-  width: 80%;
-  height: 60px;
+  width: 100%; /* Expanded to full width */
+  height: 120px;
   position: relative;
-  margin: 0 auto 5px; /* Added auto margins for horizontal centering */
-  /* margin-bottom: 5px; */
   display: flex;
   align-items: center;
 }
 
-.visualization-container .play-button {
-  position: relative;
-  left: auto;
-  margin-right: 15px;
- /* z-index: 10; */
+.album-art {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
 }
 
+.album-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.play-button {
+  position: absolute;
+  left: 170px; /* Position after the album art */
+  z-index: 5;
+}
+
+/* Canvas takes up the entire container but with padding on the left */
 canvas {
   width: 100%;
   height: 100%;
   display: block;
   border-radius: 4px;
   background-color: transparent;
+  padding-left: 220px; /* Space for album art (150px) + play button (40px) + margins */
+  box-sizing: border-box;
 }
 
-.progress-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: rgba(74, 144, 226, 0.3);
-  pointer-events: none;
-  border-radius: 4px;
-  width: 0%;
+/* Increase the player container max-width for more space */
+.player-container {
+  width: 100%;
+  max-width: 900px; /* Increased from 600px */
+  background-color: #333333;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
+/* Also increase settings container to match */
 .settings {
   width: 100%;
-  max-width: 600px;
+  max-width: 900px; /* Increased from 600px */
   background-color: #333333;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.settings h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #e0e0e0;
+@media (max-width: 768px) {
+  .visualization-container {
+    height: 100px;
+  }
+
+  .album-art {
+    width: 120px;
+    height: 120px;
+  }
+
+  .play-button {
+    left: 135px;
+  }
+
+  canvas {
+    padding-left: 180px;
+  }
 }
 
-.setting-group {
-  margin-bottom: 15px;
-}
-
-.setting-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.setting-label {
-  width: 150px;
-  margin-right: 10px;
-}
-
-.setting-value {
-  margin-left: 10px;
-  min-width: 30px;
-  text-align: center;
-}
-
-.color-picker {
-  height: 30px;
-  border: none;
-  border-radius: 4px;
-  padding: 0 5px;
-}
-
-select,
-input[type="number"],
-input[type="range"] {
-  height: 30px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 0 10px;
-}
-
-#uploadBtn {
-  padding: 5px 10px;
-  background: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Ensure the play button and waveform stay aligned nicely */
 @media (max-width: 500px) {
   .visualization-container {
-    width: 90%; /* Slightly wider on smaller screens */
+    height: 80px;
+  }
+
+  .album-art {
+    width: 80px;
+    height: 80px;
+  }
+
+  .play-button {
+    left: 95px;
+    width: 30px;
+    height: 30px;
+  }
+
+  canvas {
+    padding-left: 140px;
   }
 }
