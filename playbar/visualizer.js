@@ -16,56 +16,7 @@ function updateVolumeIcon(volume) {
   console.log("Volume updated:", volumeValue, "Icon:", volumeImage.src);
 }
 
-// Now let's find where to call this function in the existing code
-
-// Draw live visualization during playback
-function drawLiveVisualization(
-    dataArray,
-    barWidth,
-    sensitivityFactor,
-    progressPosition,
-) {
-  const bufferLength = analyser.frequencyBinCount;
-  const barColor = barColorPicker.value;
-  const progressColor = progressColorPicker.value;
-
-  // Get a subset of the frequency data for the bars
-  const step = Math.floor(bufferLength / barCount);
-
-  // Center line is in the middle of the canvas height
-  const centerY = canvas.height / 2;
-
-  for (let i = 0; i < barCount; i++) {
-    const dataIndex = Math.min(i * step, bufferLength - 1);
-
-    // Get frequency data for this bar
-    let value = dataArray[dataIndex];
-    if (value === undefined || isNaN(value)) {
-      value = 0;
-    }
-
-    // Apply sensitivity factor to bar height
-    const calculatedHeight =
-        (value / 255) * (canvas.height / 2) * (sensitivity / 5);
-
-    // Apply minimum height - ensures bars are always visible
-    const barHeight = Math.max(calculatedHeight, minBarHeight);
-
-    const x = i * (barWidth + barSpacing);
-
-    // Determine if this bar is in the played section
-    const isPlayed = x <= progressPosition;
-
-    // Set color based on whether this part has been played
-    ctx.fillStyle = isPlayed ? progressColor : barColor;
-
-    // Draw bar extending upward from center
-    ctx.fillRect(x, centerY - barHeight, barWidth, barHeight);
-
-    // Draw bar extending downward from center
-    ctx.fillRect(x, centerY, barWidth, barHeight);
-  }
-} // Audio context and analyzer setup
+// Audio context and analyzer setup
 let audioContext;
 let analyser;
 let audioSource;
@@ -78,6 +29,9 @@ let barSpacing = 1;
 let sensitivity = 10; // Now adjustable with the slider
 let minBarHeight = 1; // Minimum bar height to ensure visibility
 let staticWaveformData = null; // Store the pre-analyzed waveform data
+
+// Constants for the visualization layout
+const WAVEFORM_START_X = 250; // Fixed value from CSS (album art + play button + margins)
 
 // Canvas setup
 const canvas = document.getElementById("waveformCanvas");
@@ -244,12 +198,19 @@ function drawStaticWaveform() {
 
   resizeCanvas();
 
-  // Clear the canvas with transparent background instead of using bgColor
+  // Clear the canvas with transparent background
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Calculate bar width based on canvas width and bar count
-  const usableWidth = canvas.width - barSpacing * (barCount - 1);
-  const barWidth = usableWidth / barCount;
+  // Use the fixed starting X position for the waveform
+  const paddingLeft = WAVEFORM_START_X;
+
+  // Calculate the actual usable width for the waveform
+  const totalCanvasWidth = canvas.width;
+  const usableWidth = totalCanvasWidth - paddingLeft;
+
+  // Calculate bar width based on usable width
+  const totalBarSpace = barSpacing * (barCount - 1);
+  const barWidth = (usableWidth - totalBarSpace) / barCount;
 
   // Center line is in the middle of the canvas height
   const centerY = canvas.height / 2;
@@ -257,9 +218,13 @@ function drawStaticWaveform() {
   // Draw bars
   for (let i = 0; i < barCount; i++) {
     // Apply sensitivity factor to bar height
-    const barHeight = (staticWaveformData[i] / 255) * (canvas.height / 2);
+    const barHeight = Math.max(
+        (staticWaveformData[i] / 255) * (canvas.height / 2),
+        minBarHeight
+    );
 
-    const x = i * (barWidth + barSpacing);
+    // Calculate X position of each bar
+    const x = paddingLeft + i * (barWidth + barSpacing);
 
     // Calculate progress position
     let progressPosition = 0;
@@ -268,8 +233,7 @@ function drawStaticWaveform() {
         !isNaN(audioElement.duration) &&
         audioElement.duration > 0
     ) {
-      progressPosition =
-          (audioElement.currentTime / audioElement.duration) * canvas.width;
+      progressPosition = paddingLeft + (audioElement.currentTime / audioElement.duration) * usableWidth;
     }
 
     // Determine if this bar is in the played section
@@ -305,12 +269,19 @@ function drawVisualization() {
   // Update time displays
   updateTimeDisplays();
 
-  // Calculate bar width based on canvas width and bar count
-  const usableWidth = canvas.width - barSpacing * (barCount - 1);
-  const barWidth = usableWidth / barCount;
+  // Use the fixed starting X position for the waveform
+  const paddingLeft = WAVEFORM_START_X;
 
-  // Get the sensitivity factor (fixed at highest level)
-  const sensitivityFactor = sensitivity / 5; // This will be 2.0
+  // Calculate the actual usable width for the waveform
+  const totalCanvasWidth = canvas.width;
+  const usableWidth = totalCanvasWidth - paddingLeft;
+
+  // Calculate bar width based on usable width
+  const totalBarSpace = barSpacing * (barCount - 1);
+  const barWidth = (usableWidth - totalBarSpace) / barCount;
+
+  // Get the sensitivity factor
+  const sensitivityFactor = sensitivity / 5;
 
   // Calculate the progress position
   let progressPosition = 0;
@@ -319,8 +290,7 @@ function drawVisualization() {
       !isNaN(audioElement.duration) &&
       audioElement.duration > 0
   ) {
-    progressPosition =
-        (audioElement.currentTime / audioElement.duration) * canvas.width;
+    progressPosition = paddingLeft + (audioElement.currentTime / audioElement.duration) * usableWidth;
   }
 
   // Use real-time frequency data for the visualization during playback
@@ -328,15 +298,18 @@ function drawVisualization() {
       dataArray,
       barWidth,
       sensitivityFactor,
-      progressPosition,
+      progressPosition
   );
 }
 
-// Draw bars visualization
-function drawBars(dataArray, barWidth, sensitivityFactor, progressPosition) {
+// Draw live visualization during playback
+function drawLiveVisualization(dataArray, barWidth, sensitivityFactor, progressPosition) {
   const bufferLength = analyser.frequencyBinCount;
   const barColor = barColorPicker.value;
   const progressColor = progressColorPicker.value;
+
+  // Use the fixed starting X position for the waveform
+  const paddingLeft = WAVEFORM_START_X;
 
   // Get a subset of the frequency data for the bars
   const step = Math.floor(bufferLength / barCount);
@@ -347,19 +320,20 @@ function drawBars(dataArray, barWidth, sensitivityFactor, progressPosition) {
   for (let i = 0; i < barCount; i++) {
     const dataIndex = Math.min(i * step, bufferLength - 1);
 
-    // Make sure we have a valid value
+    // Get frequency data for this bar
     let value = dataArray[dataIndex];
     if (value === undefined || isNaN(value)) {
       value = 0;
     }
 
-    // Apply sensitivity factor to bar height - ensure we have visible bars
-    const barHeight = Math.max(
-        (value / 255) * (canvas.height / 2) * sensitivityFactor,
-        1,
-    );
+    // Apply sensitivity factor to bar height
+    const calculatedHeight = (value / 255) * (canvas.height / 2) * (sensitivity / 5);
 
-    const x = i * (barWidth + barSpacing);
+    // Apply minimum height - ensures bars are always visible
+    const barHeight = Math.max(calculatedHeight, minBarHeight);
+
+    // Calculate X position of each bar
+    const x = paddingLeft + i * (barWidth + barSpacing);
 
     // Determine if this bar is in the played section
     const isPlayed = x <= progressPosition;
@@ -388,9 +362,15 @@ function togglePlayback() {
     audioContext.resume();
   }
 
+  // Get references to the icon images
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+
   if (isPlaying) {
     audioElement.pause();
-    playBtn.textContent = "▶";
+   // Show play icon, hide pause icon
+   playIcon.style.display = "block";
+   pauseIcon.style.display = "none";
     cancelAnimationFrame(animationId);
     // Redraw static waveform with current progress
     drawStaticWaveform();
@@ -399,12 +379,16 @@ function togglePlayback() {
     if (!staticWaveformData && audioElement.duration > 0) {
       analyzeAudio().then(() => {
         audioElement.play();
-        playBtn.textContent = "❚❚";
+        // Show pause icon, hide play icon
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
         drawVisualization();
       });
     } else {
       audioElement.play();
-      playBtn.textContent = "❚❚";
+      // Show pause icon, hide play icon
+      playIcon.style.display = "none";
+      pauseIcon.style.display = "block";
       drawVisualization();
     }
   }
@@ -433,7 +417,10 @@ async function loadAudioFile(file) {
 
   // Reset state
   isPlaying = false;
-  playBtn.textContent = "▶";
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+  playIcon.style.display = "block";
+  pauseIcon.style.display = "none";
 
   // Show file name
   document.querySelector(".song-title").textContent = file.name.replace(
@@ -486,8 +473,24 @@ canvas.addEventListener("click", function (event) {
   const rect = canvas.getBoundingClientRect();
   const clickX = event.clientX - rect.left;
 
-  // Calculate the percentage of the width where the click occurred
-  const clickPercent = clickX / canvas.width;
+  // Only process the click if it's in the waveform area (after the fixed position)
+  if (clickX < WAVEFORM_START_X) {
+    console.log("Click ignored - in album art/play button area");
+    return;
+  }
+
+  // Calculate the percentage based on the position within the actual waveform area
+  // The actual waveform width is the total canvas width minus the starting position
+  const totalCanvasWidth = rect.width;
+  const actualWaveformWidth = totalCanvasWidth - WAVEFORM_START_X;
+
+  // Adjusted click position (relative to start of waveform)
+  const adjustedClickX = clickX - WAVEFORM_START_X;
+
+  // Calculate percentage (position in waveform / waveform width)
+  const clickPercent = adjustedClickX / actualWaveformWidth;
+
+  console.log(`Click at x=${clickX}, adjusted=${adjustedClickX}, waveform width=${actualWaveformWidth}, percent=${clickPercent}`);
 
   // Set the audio playback position based on the click location
   if (audioElement.duration) {
@@ -564,6 +567,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Initialize audio
   initAudio();
 
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+  if(isPlaying) {
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "block";
+  } else {
+    playIcon.style.display = "block";
+    pauseIcon.style.display = "none";
+  }
   // Preload with your audio file
   audioElement = new Audio();
   audioElement.src = "AF_BullFight_Mockup_Master.wav";
@@ -574,6 +586,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   audioElement.addEventListener("error", function (e) {
     console.error("Error loading audio:", e);
+
+
   });
 
   audioElement.addEventListener("loadedmetadata", async function () {

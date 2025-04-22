@@ -19,6 +19,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   padding: 20px;
   margin-bottom: 20px;
+  overflow: visible;
 }
 
 .song-info {
@@ -58,29 +59,38 @@ body {
   margin-bottom: 15px;
 }
 
-.play-button {
-  background-color: #ff0000;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin-right: 15px;
-  font-size: 14px;
-  z-index: 10;
-}
+
 
 .time-info {
-  display: flex;
-  justify-content: space-between;
+  position: absolute;
   width: 100%;
   font-size: 0.8em;
-  color: #aaaaaa;
-  margin-top: 5px;
+  color: #ffffff;
+  pointer-events: none;
+  z-index: 20;
+
+}
+
+.time-info #currentTime {
+  position: absolute;
+  left: 210px;
+  top: 50%;
+  transform: translatey(-50%);
+  white-space: nowrap;
+  background-color: transparent;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.time-info #totalTime {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translatey(-50%);
+  white-space: nowrap;
+  background-color: transparent;
+  padding: 2px 5px;
+  border-radius: 3px;
 }
 
 /* Updated visualization layout for wider waveform */
@@ -89,6 +99,7 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 5px;
+  overflow: visible;
 }
 
 .visualization-container {
@@ -97,6 +108,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  overflow: visible;
 }
 
 .album-art {
@@ -104,7 +116,7 @@ body {
   width: 150px;
   height: 150px;
   display: flex;
-  align-items: center;
+/*  align-items: center; */
   justify-content: center;
   left: 0;
   top: 50%;
@@ -120,9 +132,33 @@ body {
 
 .play-button {
   position: absolute;
-  left: 170px; /* Position after the album art */
-  z-index: 5;
+  left: 160px; /* Position after the album art */
+  z-index: 10;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
 }
+
+.button-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: 0 auto;
+}
+
+/*.play-button {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*}*/
 
 /* Canvas takes up the entire container but with padding on the left */
 canvas {
@@ -131,8 +167,11 @@ canvas {
   display: block;
   border-radius: 4px;
   background-color: transparent;
-  padding-left: 220px; /* Space for album art (150px) + play button (40px) + margins */
+  padding-right: 30px;
+  padding-left: 20px; /* Space for album art (150px) + play button (40px) + margins */
   box-sizing: border-box;
+  overflow: visible;
+
 }
 
 /* Increase the player container max-width for more space */
@@ -144,6 +183,7 @@ canvas {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   padding: 20px;
   margin-bottom: 20px;
+  overflow: visible;
 }
 
 /* Also increase settings container to match */
