@@ -5,28 +5,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Configuration for your logos
   const logoConfigs = {
     github: {
-      defaultSvg: "./assets/github-logo-default.svg" + cacheBuster,
-      hoverSvg: "./assets/github-logo-hover.svg" + cacheBuster,
+      defaultSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/github-logo-default.svg" + cacheBuster,
+      hoverSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/github-logo-hover.svg" + cacheBuster,
       link: "https://github.com/afort24",
     },
     instagram: {
-      defaultSvg: "./assets/instagram-logo-default.svg" + cacheBuster,
-      hoverSvg: "./assets/instagram-logo-hover.svg" + cacheBuster,
+      defaultSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/instagram-logo-default.svg" + cacheBuster,
+      hoverSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/instagram-logo-hover.svg" + cacheBuster,
       link: "https://instagram.com/alexfortunato.wav",
     },
     linkedin: {
-      defaultSvg: "./assets/linkedin-logo-default.svg" + cacheBuster,
-      hoverSvg: "./assets/linkedin-logo-hover.svg" + cacheBuster,
+      defaultSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/linkedin-logo-default.svg" + cacheBuster,
+      hoverSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/linkedin-logo-hover.svg" + cacheBuster,
       link: "https://linkedin.com/in/alex--fortunato",
     },
     youtube: {
-      defaultSvg: "./assets/youtube-logo-default.svg" + cacheBuster,
-      hoverSvg: "./assets/youtube-logo-hover.svg" + cacheBuster,
+      defaultSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/youtube-logo-default.svg" + cacheBuster,
+      hoverSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/youtube-logo-hover.svg" + cacheBuster,
       link: "https://youtube.com/@alexfortunatomusic1951?si=-fu_ilkMKKh24px7",
     },
     soundcloud: {
-      defaultSvg: "./assets/soundcloud-logo-default.svg" + cacheBuster,
-      hoverSvg: "./assets/soundcloud-logo-hover.svg" + cacheBuster,
+      defaultSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/soundcloud-logo-default.svg" + cacheBuster,
+      hoverSvg: "https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/assets/soundcloud-logo-hover.svg" + cacheBuster,
       link: "https://soundcloud.com/alex-fortunato",
     },
   };

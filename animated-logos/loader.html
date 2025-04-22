@@ -1,0 +1,31 @@
+<div id="alex-social-media-container"></div>
+
+<script>
+    // Load CSS
+    const styleLink = document.createElement('link');
+    styleLink.rel = 'stylesheet';
+    styleLink.href = 'https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/styles.css';
+    document.head.appendChild(styleLink);
+
+    // Load HTML content
+    fetch('https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/index.html')
+        .then(response => response.text())
+        .then(html => {
+            // Extract just the container element from the HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const container = doc.querySelector('.container');
+
+            if (container) {
+                document.getElementById('alex-social-media-container').appendChild(container);
+
+                // Load JavaScript after HTML is inserted
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/gh/alex-fortunato/Website@main/animated-logos/script.js';
+                document.body.appendChild(script);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading social media content:', error);
+        });
+</script>
