@@ -1,0 +1,190 @@
+
+<div class="alexf-social-container">
+    <div class="alexf-content-wrapper">
+        <h1 class="alexf-connect-title">Connect with Alex...</h1>
+        <div class="alexf-logos-wrapper">
+            <!-- Instagram logo -->
+            <a href="https://instagram.com/alexfortunato.wav" class="alexf-logo-link">
+                <div class="alexf-logo-container" data-logo="instagram"></div>
+            </a>
+            <!-- GitHub logo -->
+            <a href="https://github.com/alex-fortunato" class="alexf-logo-link">
+                <div class="alexf-logo-container" data-logo="github"></div>
+            </a>
+            <!-- LinkedIn logo -->
+            <a href="https://linkedin.com/in/alex--fortunato" class="alexf-logo-link">
+                <div class="alexf-logo-container" data-logo="linkedin"></div>
+            </a>
+            <!-- YouTube logo -->
+            <a href="https://www.youtube.com/@alexfortunatomusic1951" class="alexf-logo-link">
+                <div class="alexf-logo-container" data-logo="youtube"></div>
+            </a>
+            <!-- SoundCloud logo -->
+            <a href="https://soundcloud.com/alex-fortunato" class="alexf-logo-link">
+                <div class="alexf-logo-container" data-logo="soundcloud"></div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.alexf-social-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.alexf-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+    gap: 15px;
+}
+
+.alexf-connect-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: #ffffff !important;
+    margin: 0 0 5px 0;
+    text-align: left;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    -webkit-text-fill-color: #ffffff;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: alexf-fadeIn 0.8s ease forwards;
+}
+
+.alexf-logos-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.alexf-logo-link {
+    display: inline-block;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.alexf-logo-link:nth-child(1) { animation: alexf-fadeIn 0.6s ease 0.2s forwards; }
+.alexf-logo-link:nth-child(2) { animation: alexf-fadeIn 0.6s ease 0.3s forwards; }
+.alexf-logo-link:nth-child(3) { animation: alexf-fadeIn 0.6s ease 0.4s forwards; }
+.alexf-logo-link:nth-child(4) { animation: alexf-fadeIn 0.6s ease 0.5s forwards; }
+.alexf-logo-link:nth-child(5) { animation: alexf-fadeIn 0.6s ease 0.6s forwards; }
+
+.alexf-logo-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.alexf-logo-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+}
+
+.alexf-logo-icon.active {
+    opacity: 1;
+}
+
+@keyframes alexf-fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+    .alexf-content-wrapper { align-items: center; gap: 10px; }
+    .alexf-connect-title { text-align: center; font-size: 1.8rem; margin-bottom: 5px; }
+    .alexf-logos-wrapper { justify-content: center; gap: 8px; }
+    .alexf-logo-container { width: 50px; height: 50px; }
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cacheBuster = "?v=" + new Date().getTime();
+
+    const logoConfigs = {
+        github: {
+            defaultSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/github-logo-default.svg" + cacheBuster,
+            hoverSvg:   "https://alex-fortunato.github.io/Website/animated-logos/assets/github-logo-hover.svg" + cacheBuster,
+            link: "https://github.com/alex-fortunato",
+        },
+        instagram: {
+            defaultSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/instagram-logo-default.svg" + cacheBuster,
+            hoverSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/instagram-logo-hover.svg" + cacheBuster,
+            link: "https://instagram.com/alexfortunato.wav",
+        },
+        linkedin: {
+            defaultSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/linkedin-logo-default.svg" + cacheBuster,
+            hoverSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/linkedin-logo-hover.svg" + cacheBuster,
+            link: "https://linkedin.com/in/alex--fortunato",
+        },
+        youtube: {
+            defaultSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/youtube-logo-default.svg" + cacheBuster,
+            hoverSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/youtube-logo-hover.svg" + cacheBuster,
+            link: "https://www.youtube.com/@alexfortunatomusic1951",
+        },
+        soundcloud: {
+            defaultSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/soundcloud-logo-default.svg" + cacheBuster,
+            hoverSvg: "https://alex-fortunato.github.io/Website/animated-logos/assets/soundcloud-logo-hover.svg" + cacheBuster,
+            link: "https://soundcloud.com/alex-fortunato",
+        },
+    };
+
+    document.querySelectorAll(".alexf-logo-container").forEach((container) => {
+        const logoType = container.getAttribute("data-logo");
+        const config = logoConfigs[logoType];
+        const link = container.closest(".alexf-logo-link");
+
+        if (!config) return;
+
+        container.innerHTML = "";
+
+        const defaultObj = document.createElement("object");
+        defaultObj.setAttribute("type", "image/svg+xml");
+        defaultObj.setAttribute("data", config.defaultSvg);
+        defaultObj.classList.add("alexf-logo-icon", "active");
+        defaultObj.id = `${logoType}-icon-default`;
+
+        const hoverObj = document.createElement("object");
+        hoverObj.setAttribute("type", "image/svg+xml");
+        hoverObj.setAttribute("data", config.hoverSvg);
+        hoverObj.classList.add("alexf-logo-icon");
+        hoverObj.id = `${logoType}-icon-hover`;
+
+        container.appendChild(defaultObj);
+        container.appendChild(hoverObj);
+
+        link.addEventListener("mouseenter", () => {
+            defaultObj.classList.remove("active");
+            hoverObj.classList.add("active");
+        });
+
+        link.addEventListener("mouseleave", () => {
+            hoverObj.classList.remove("active");
+            defaultObj.classList.add("active");
+        });
+    });
+});
+
+</script>
