@@ -36,8 +36,8 @@ const version = Date.now(); // timestamp-based cache buster
 const iframeCode = `
 <iframe 
   src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=${version}"
-  width="100%" 
-  height="300"
+  width="90%" 
+  height="160"
   style="border: none; overflow: hidden;">
 </iframe>
 `;

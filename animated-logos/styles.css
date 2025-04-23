@@ -13,13 +13,13 @@
 .alexf-content-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     width: auto;
     gap: 15px;
 }
 
 .alexf-connect-title {
-    /*font-family: "Cormorant Garamond", serif;*/
+    font-family: "Cormorant Garamond", serif;
     font-size: 2rem;
     font-style: italic;
     color: #ffffff !important;
