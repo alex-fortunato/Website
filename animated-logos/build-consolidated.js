@@ -1,10 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const htmlPath = path.join(__dirname, "index.html");
-const cssPath = path.join(__dirname, "styles.css");
-const jsPath = path.join(__dirname, "script.js");
-const outputPath = path.join(__dirname, "consolidated.html");
+// File paths
+const baseDir = __dirname;
+const htmlPath = path.join(baseDir, "index.html");
+const cssPath = path.join(baseDir, "styles.css");
+const jsPath = path.join(baseDir, "script.js");
+const outputHtml = path.join(baseDir, "consolidated.html");
+const outputIframe = path.join(baseDir, "squarespaceLoader.html");
 
 // Load file contents
 const html = fs.readFileSync(htmlPath, "utf8");
@@ -25,6 +28,19 @@ ${js}
 `;
 
 // Write to consolidated.html
-fs.writeFileSync(outputPath, consolidated);
-
+fs.writeFileSync(outputHtml, consolidated);
 console.log("✅ consolidated.html created successfully.");
+
+// Generate squarespaceLoader.html with cache-busting version
+const version = Date.now(); // timestamp-based cache buster
+const iframeCode = `
+<iframe 
+  src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=${version}"
+  width="100%" 
+  height="300"
+  style="border: none; overflow: hidden;">
+</iframe>
+`;
+
+fs.writeFileSync(outputIframe, iframeCode.trim());
+console.log("✅ squarespaceLoader.html created with version:", version);
