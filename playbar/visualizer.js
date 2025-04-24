@@ -31,8 +31,26 @@ let minBarHeight = 1; // Minimum bar height to ensure visibility
 let staticWaveformData = null; // Store the pre-analyzed waveform data
 
 // Constants for the visualization layout
-const WAVEFORM_START_X = 250; // Fixed value from CSS (album art + play button + margins)
+// const WAVEFORM_START_X = 250; // Fixed value from CSS (album art + play button + margins)
+function getWaveformStartX() {
+ const art = document.querySelector(".album-art");
+ const button = document.querySelector(".play-button");
 
+ const artW = art?.offsetWidth || 150;
+ const btnW = button?.offsetWidth || 10;
+ const margin = -20;
+
+ const canvasPadding = parseFloat(getComputedStyle(canvas).paddingLeft) || 0;
+ return artW + btnW + margin + canvasPadding;
+}
+
+function updateTimeLabelPosition() {
+  const waveformStart = getWaveformStartX();
+  const waveformWidth = canvas.width - waveformStart;
+  const totalTimeX = waveformStart + waveformWidth + 8;
+
+  document.documentElement.style.setProperty('--waveform-end', `${totalTimeX}px`);
+}
 // Canvas setup
 const canvas = document.getElementById("waveformCanvas");
 const ctx = canvas.getContext("2d");
@@ -98,6 +116,8 @@ function resizeCanvas() {
     canvas.width = containerWidth;
     canvas.height = containerHeight;
   }
+  document.documentElement.style.setProperty('--waveform-left', `${getWaveformStartX()}px`);
+  updateTimeLabelPosition();
 }
 
 // Format time in MM:SS
@@ -202,7 +222,8 @@ function drawStaticWaveform() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Use the fixed starting X position for the waveform
-  const paddingLeft = WAVEFORM_START_X;
+  // const paddingLeft = WAVEFORM_START_X;
+  const paddingLeft = getWaveformStartX();
 
   // Calculate the actual usable width for the waveform
   const totalCanvasWidth = canvas.width;
@@ -270,8 +291,8 @@ function drawVisualization() {
   updateTimeDisplays();
 
   // Use the fixed starting X position for the waveform
-  const paddingLeft = WAVEFORM_START_X;
-
+  // const paddingLeft = WAVEFORM_START_X;
+  const paddingLeft = getWaveformStartX();
   // Calculate the actual usable width for the waveform
   const totalCanvasWidth = canvas.width;
   const usableWidth = totalCanvasWidth - paddingLeft;
@@ -309,7 +330,8 @@ function drawLiveVisualization(dataArray, barWidth, sensitivityFactor, progressP
   const progressColor = progressColorPicker.value;
 
   // Use the fixed starting X position for the waveform
-  const paddingLeft = WAVEFORM_START_X;
+  // const paddingLeft = WAVEFORM_START_X;
+  const paddingLeft = getWaveformStartX();
 
   // Get a subset of the frequency data for the bars
   const step = Math.floor(bufferLength / barCount);
@@ -471,26 +493,26 @@ canvas.addEventListener("click", function (event) {
 
   // Get click position relative to canvas
   const rect = canvas.getBoundingClientRect();
-  const clickX = event.clientX - rect.left;
+  // const clickX = event.clientX - rect.left;
+  const styles = getComputedStyle(canvas);
+  const paddingLeft = parseInt(styles.paddingLeft);
+  const clickX = event.clientX - rect.left - paddingLeft;
 
   // Only process the click if it's in the waveform area (after the fixed position)
-  if (clickX < WAVEFORM_START_X) {
+  if (clickX < getWaveformStartX()) {
     console.log("Click ignored - in album art/play button area");
     return;
   }
 
   // Calculate the percentage based on the position within the actual waveform area
   // The actual waveform width is the total canvas width minus the starting position
-  const totalCanvasWidth = rect.width;
-  const actualWaveformWidth = totalCanvasWidth - WAVEFORM_START_X;
 
-  // Adjusted click position (relative to start of waveform)
-  const adjustedClickX = clickX - WAVEFORM_START_X;
+  const paddingRight = parseFloat(styles.paddingRight) || 0;
+  const waveformStart = getWaveformStartX();
+  const usableWidth = canvas.width - waveformStart - paddingRight;
+  const adjustedClickX = clickX - waveformStart;
 
-  // Calculate percentage (position in waveform / waveform width)
-  const clickPercent = adjustedClickX / actualWaveformWidth;
-
-  console.log(`Click at x=${clickX}, adjusted=${adjustedClickX}, waveform width=${actualWaveformWidth}, percent=${clickPercent}`);
+  const clickPercent = adjustedClickX / usableWidth;
 
   // Set the audio playback position based on the click location
   if (audioElement.duration) {

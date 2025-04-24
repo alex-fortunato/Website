@@ -65,15 +65,17 @@ body {
   position: absolute;
   width: 100%;
   font-size: 0.8em;
-  color: #ffffff;
+  color: #ff0000;
   pointer-events: none;
   z-index: 20;
+
 
 }
 
 .time-info #currentTime {
   position: absolute;
-  left: 210px;
+  /*left: var(--waveform-left, 210px);*/
+  left: 190px;
   top: 50%;
   transform: translatey(-50%);
   white-space: nowrap;
@@ -84,6 +86,7 @@ body {
 
 .time-info #totalTime {
   position: absolute;
+  /*left: var(--waveform-end, 700px);*/
   right: -10px;
   top: 50%;
   transform: translatey(-50%);
@@ -131,8 +134,8 @@ body {
 }
 
 .play-button {
-  position: absolute;
-  left: 160px; /* Position after the album art */
+  position: relative;
+  left: 140px; /* Position after the album art */
   z-index: 10;
   background-color: transparent;
   color: white;
@@ -168,8 +171,8 @@ canvas {
   border-radius: 4px;
   background-color: transparent;
   padding-right: 30px;
-  padding-left: 20px; /* Space for album art (150px) + play button (40px) + margins */
-  box-sizing: border-box;
+  padding-left: 0; /* Space for album art (150px) + play button (40px) + margins */
+  box-sizing: content-box;
   overflow: visible;
 
 }
@@ -209,29 +212,29 @@ canvas {
   .play-button {
     left: 135px;
   }
-
-  canvas {
-    padding-left: 180px;
-  }
 }
+/*  canvas {*/
+/*    padding-left: 180px;*/
+/*  }*/
+/*}*/
 
-@media (max-width: 500px) {
-  .visualization-container {
-    height: 80px;
-  }
+/*@media (max-width: 500px) {*/
+/*  .visualization-container {*/
+/*    height: 80px;*/
+/*  }*/
 
-  .album-art {
-    width: 80px;
-    height: 80px;
-  }
+/*  .album-art {*/
+/*    width: 80px;*/
+/*    height: 80px;*/
+/*  }*/
 
-  .play-button {
-    left: 95px;
-    width: 30px;
-    height: 30px;
-  }
+/*  .play-button {*/
+/*    left: 95px;*/
+/*    width: 30px;*/
+/*    height: 30px;*/
+/*  }*/
 
-  canvas {
-    padding-left: 140px;
-  }
-}
+/*  canvas {*/
+/*    padding-left: 140px;*/
+/*  }*/
+/*}*/
