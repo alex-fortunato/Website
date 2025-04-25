@@ -34,6 +34,16 @@ console.log("✅ consolidated.html created successfully.");
 // Generate squarespaceLoader.html with cache-busting version
 const version = Date.now(); // timestamp-based cache buster
 const iframeCode = `
+<script>
+// Add event listener to handle messages from the iframe 
+window.addEventListener("message", function(event) {
+    // Check if the message is from our iframe and contains a link to open
+    if (event.data && event.data.type === "openLink" && event.data.url) {
+        // Open the link in a new tab/window
+        window.open(event.data.url, "_blank")
+    }
+ });
+</script>
 <iframe 
   src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=${version}"
   width="90%" 

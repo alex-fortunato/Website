@@ -1,5 +1,15 @@
+<script>
+// Add event listener to handle messages from the iframe 
+window.addEventListener("message", function(event) {
+    // Check if the message is from our iframe and contains a link to open
+    if (event.data && event.data.type === "openLink" && event.data.url) {
+        // Open the link in a new tab/window
+        window.open(event.data.url, "_blank")
+    }
+ });
+</script>
 <iframe 
-  src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=1745597879545"
+  src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=1745598307075"
   width="90%" 
   height="160"
   style="border: none; overflow: hidden;">
