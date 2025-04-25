@@ -5,7 +5,7 @@ const path = require("path");
 const baseDir = __dirname;
 const htmlPath = path.join(baseDir, "index.html");
 const cssPath = path.join(baseDir, "styles.css");
-const jsPath = path.join(baseDir, "visualizer.js");
+const jsPath = path.join(baseDir, "multi-visualizer.js");
 const outputHtml = path.join(baseDir, "consolidated.html");
 const outputIframe = path.join(baseDir, "squarespaceLoader.html");
 

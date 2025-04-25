@@ -7,43 +7,76 @@
 <link rel="stylesheet" href="styles.css" />
 <!--</head>-->
 <!--<body>-->
-<div class="player-container">
-  <div class="visualization-wrapper">
-    <div class="visualization-container">
-      <div class="album-art">
-        <img
-                src="https://alex-fortunato.github.io/Website/playbar/assets/red-bull-logo.svg"
-                alt="Album Art"
-                width="150"
-                height="150"
-        />
+<div class="playlist-container">
+  <!-- This container holds all player instances -->
+
+  <!-- Player 1 -->
+  <div class="player-container" data-player-id="player1">
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art">
+          <img
+                  src="https://alex-fortunato.github.io/Website/playbar/assets/red-bull-logo.svg"
+                  alt="Album Art"
+                  width="150"
+                  height="150"
+          />
+        </div>
+        <button class="play-button">
+          <img class="play-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg" class="button-icon" />
+          <img class="pause-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg" class="button-icon" style="display: none;" />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
       </div>
-      <button class="play-button" id="playBtn">
-        <img id="playIcon" src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg"
-             class="button-icon" />
-        <img
-                id="pauseIcon"
-                src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg"
-                class="button-icon"
-                style="display: none;"
-        />
-      </button>
-      <div class="time-info">
-        <span id="currentTime">0:00</span>
-        <span id="totalTime">0:00</span>
-      </div>
-      <canvas id="waveformCanvas"></canvas>
+    </div>
+    <div class="song-info">
+      <div class="song-title">Song Title 1</div>
     </div>
   </div>
-  <!-- Hidden audio upload - keeping in case I want upload functionality in Squarespace -->
-  <input
-    type="file"
-    id="audioUpload"
-    accept="audio/*"
-    style="display: none;"
-    />
+
+  <!-- Player 2 -->
+  <div class="player-container" data-player-id="player2">
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art">
+          <img
+                  src="https://alex-fortunato.github.io/Website/playbar/assets/red-bull-logo.svg"
+                  alt="Album Art"
+                  width="150"
+                  height="150"
+          />
+        </div>
+        <button class="play-button">
+          <img class="play-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg" class="button-icon" />
+          <img class="pause-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg" class="button-icon" style="display: none;" />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
+      </div>
+    </div>
+    <div class="song-info">
+      <div class="song-title">Song Title 2</div>
+    </div>
+  </div>
+
+  <!-- Add more player instances as needed here -->
 </div>
 
+<!-- Hidden audio upload - keeping in case I want upload functionality in Squarespace -->
+<input
+        type="file"
+        id="audioUpload"
+        accept="audio/*"
+        style="display: none;"
+/>
+
 <!--<script src="visualizer.js"></script>-->
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->

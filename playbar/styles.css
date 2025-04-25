@@ -22,19 +22,44 @@
 /*  overflow: visible;*/
 /*}*/
 
+.playlist-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
 
-.song-title {
-  font-weight: bold;
+
+/*.song-title {*/
+/*  font-weight: bold;*/
+/*  margin-bottom: 5px;*/
+/*}*/
+
+.player-container {
+  width: 100%;
+  max-width: 900px;
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  overflow: visible
+}
+
+.song-info {
   margin-bottom: 5px;
 }
 
-
-
-controls {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+.song-title {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-left: 150px;
 }
+
+
+/*controls {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  margin-bottom: 15px;*/
+/*}*/
 
 
 
@@ -49,7 +74,8 @@ controls {
 
 }
 
-.time-info #currentTime {
+.time-info .current-time,
+.time-info span.current-time {
   position: absolute;
   /*left: var(--waveform-left, 210px);*/
   /*left: 190px;*/
@@ -61,7 +87,8 @@ controls {
   border-radius: 3px;
 }
 
-.time-info #totalTime {
+.time-info .total-time,
+.time-info span.total-time {
   position: absolute;
   /*left: var(--waveform-end, 700px);*/
   /*right: -10px;*/
@@ -127,7 +154,9 @@ controls {
   font-size: 14px;
 }
 
-.button-icon {
+.button-icon,
+.play-icon,
+.pause-icon {
   width: 24px;
   height: 24px;
   display: block;
@@ -141,7 +170,8 @@ controls {
 /*}*/
 
 /* Canvas takes up the entire container but with padding on the left */
-canvas {
+.waveform-canvas,
+canvas.waveform-canvas {
   width: 100%;
   height: 100%;
   display: block;
@@ -155,16 +185,16 @@ canvas {
 }
 
 /* Increase the player container max-width for more space */
-.player-container {
-  width: 100%;
-  max-width: 900px; /* Increased from 600px */
-  background-color: transparent;
-  border-radius: 8px;
-  /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);*/
-  padding: 20px;
-  margin-bottom: 20px;
-  overflow: visible;
-}
+/*.player-container {*/
+/*  width: 100%;*/
+/*  max-width: 900px; !* Increased from 600px *!*/
+/*  background-color: transparent;*/
+/*  border-radius: 8px;*/
+/*  !*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);*!*/
+/*  padding: 20px;*/
+/*  margin-bottom: 20px;*/
+/*  overflow: visible;*/
+/*}*/
 
 /*!* Also increase settings container to match *!*/
 /*.settings {*/
