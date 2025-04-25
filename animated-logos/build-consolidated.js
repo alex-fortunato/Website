@@ -46,7 +46,7 @@ window.addEventListener("message", function(event) {
 </script>
 <iframe 
   src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=${version}"
-  width="90%" 
+  width="100%" 
   height="160"
   style="border: none; overflow: hidden;">
 </iframe>
