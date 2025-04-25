@@ -82,6 +82,8 @@ function initAudio() {
   }
 }
 
+
+
 // Function to update time label positions based on current waveform dimensions
 function updateTimeInfoPositions() {
   const waveformStartX = getWaveformStartX();
@@ -481,6 +483,26 @@ function togglePlayback() {
   isPlaying = !isPlaying;
 }
 
+function handleAudioEnd() {
+  isPlaying = false;
+
+  const playIcon = document.getElementById("playIcon");
+  const pauseIcon = document.getElementById("pauseIcon");
+  playIcon.style.display = "block";
+  pauseIcon.style.display = "none";
+
+  // Stop the animation
+  cancelAnimationFrame(animationId);
+
+  // Reset the audio to beginning for automatic rewind
+  audioElement.currentTime = 0;
+
+  // update displays
+  updateTimeDisplays();
+
+  // Redraw static waveform to show the reset state
+  drawStaticWaveform();
+}
 // Load audio file
 async function loadAudioFile(file) {
   const fileURL = URL.createObjectURL(file);
@@ -489,6 +511,9 @@ async function loadAudioFile(file) {
   audioElement = new Audio();
   audioElement.crossOrigin = "anonymous";
   audioElement.src = fileURL;
+
+  // Ended event listener
+  audioElement.addEventListener("ended", handleAudioEnd);
 
   // If audio context exists, reconnect the new element
   if (audioContext) {
@@ -565,28 +590,32 @@ canvas.addEventListener("click", function (event) {
   const rect = canvas.getBoundingClientRect();
   // const clickX = event.clientX - rect.left;
   const styles = getComputedStyle(canvas);
-  const paddingLeft = parseInt(styles.paddingLeft);
-  const clickX = event.clientX - rect.left - paddingLeft;
+  const paddingLeft = getWaveformStartX();
+  const clickX = event.clientX - rect.left;
 
   // Only process the click if it's in the waveform area (after the fixed position)
-  if (clickX < getWaveformStartX()) {
+  if (clickX < paddingLeft) {
     console.log("Click ignored - in album art/play button area");
     return;
   }
 
   // Calculate the percentage based on the position within the actual waveform area
   // The actual waveform width is the total canvas width minus the starting position
-
+  const canvasScaleFactor = canvas.width / canvas.clientWidth;
+  const totalCanvasWidth = canvas.width;
   const paddingRight = parseFloat(styles.paddingRight) || 0;
   const waveformStart = getWaveformStartX();
-  const usableWidth = canvas.width - waveformStart - paddingRight;
-  const adjustedClickX = clickX - waveformStart;
+  const usableWidth = canvas.width - paddingLeft;
+  const adjustedClickX = (clickX - paddingLeft) * canvasScaleFactor;
 
-  const clickPercent = adjustedClickX / usableWidth;
+  // const clickPercentOfCanvas = (clickX - waveformStart) / (usableWidth - waveformStart);
+  const clickPercent = adjustedClickX  / usableWidth;
+
+  const clampedPercent = Math.max(0, Math.min(1, clickPercent));
 
   // Set the audio playback position based on the click location
   if (audioElement.duration) {
-    audioElement.currentTime = clickPercent * audioElement.duration;
+    audioElement.currentTime = clampedPercent * audioElement.duration;
 
     // Update the visualization
     if (isPlaying) {
@@ -656,6 +685,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   audioElement = new Audio();
   audioElement.src = "AF_BullFight_Mockup_Master.wav";
   audioElement.crossOrigin = "anonymous";
+
+  audioElement.addEventListener("ended", handleAudioEnd);
 
   // Debug audio loading
   console.log("Attempting to load:", audioElement.src);
