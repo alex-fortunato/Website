@@ -13,6 +13,11 @@
 
   <!-- Player 1 -->
   <div class="player-container" data-player-id="player1">
+    <!-- Song info is now placed before the visualization wrapper -->
+    <div class="song-info">
+      <div class="song-title">Bull Fight / Sounds of Red Bull 2025</div>
+    </div>
+
     <div class="visualization-wrapper">
       <div class="visualization-container">
         <div class="album-art">
@@ -33,14 +38,16 @@
         </div>
         <canvas class="waveform-canvas"></canvas>
       </div>
-    </div>
-    <div class="song-info">
-      <div class="song-title">Song Title 1</div>
     </div>
   </div>
 
   <!-- Player 2 -->
   <div class="player-container" data-player-id="player2">
+    <!-- Song info is now placed before the visualization wrapper -->
+    <div class="song-info">
+      <div class="song-title">The Kiss (Excerpt)/ Budapest Art Orchestra</div>
+    </div>
+
     <div class="visualization-wrapper">
       <div class="visualization-container">
         <div class="album-art">
@@ -61,9 +68,6 @@
         </div>
         <canvas class="waveform-canvas"></canvas>
       </div>
-    </div>
-    <div class="song-info">
-      <div class="song-title">Song Title 2</div>
     </div>
   </div>
 
@@ -120,6 +124,8 @@
 /*}*/
 
 .player-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 900px;
   background-color: transparent;
@@ -130,13 +136,24 @@
 }
 
 .song-info {
-  margin-bottom: 5px;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+  position: relative;
+  z-index: 20;
+  order: -1;
+
 }
 
 .song-title {
   font-weight: bold;
-  margin-top: 10px;
-  margin-left: 150px;
+  margin-left: 250px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 1.1em;
+  position: relative;
+  z-index: 20;
+  color: red;
 }
 
 

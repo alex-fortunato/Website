@@ -35,6 +35,8 @@
 /*}*/
 
 .player-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 900px;
   background-color: transparent;
@@ -45,13 +47,24 @@
 }
 
 .song-info {
-  margin-bottom: 5px;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+  position: relative;
+  z-index: 20;
+  order: -1;
+
 }
 
 .song-title {
   font-weight: bold;
-  margin-top: 10px;
-  margin-left: 150px;
+  margin-left: 250px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 1.1em;
+  position: relative;
+  z-index: 20;
+  color: red;
 }
 
 

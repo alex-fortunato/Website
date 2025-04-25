@@ -37,7 +37,7 @@ const iframeCode = `
 <iframe 
   src="https://alex-fortunato.github.io/Website/playbar/consolidated.html?v=${version}"
   width="100%" 
-  height="180"
+  height="420"
   style="border: none; overflow: hidden;">
 </iframe>
 `;
