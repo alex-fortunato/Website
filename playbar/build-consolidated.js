@@ -5,7 +5,7 @@ const path = require("path");
 const baseDir = __dirname;
 const htmlPath = path.join(baseDir, "index.html");
 const cssPath = path.join(baseDir, "styles.css");
-const jsPath = path.join(baseDir, "script.js");
+const jsPath = path.join(baseDir, "visualizer.js");
 const outputHtml = path.join(baseDir, "consolidated.html");
 const outputIframe = path.join(baseDir, "squarespaceLoader.html");
 
@@ -45,7 +45,7 @@ window.addEventListener("message", function(event) {
  });
 </script>
 <iframe 
-  src="https://alex-fortunato.github.io/Website/animated-logos/consolidated.html?v=${version}"
+  src="https://alex-fortunato.github.io/Website/playbar/consolidated.html?v=${version}"
   width="100%" 
   height="160"
   style="border: none; overflow: hidden;">

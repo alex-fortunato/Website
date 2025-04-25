@@ -1,60 +1,29 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Custom Audio Waveform Visualizer</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8" />-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+<!--  <title>Custom Audio Waveform Visualizer</title>-->
+<link rel="stylesheet" href="styles.css" />
+<!--</head>-->
+<!--<body>-->
 <div class="player-container">
-  <div class="song-info">
-    <div class="song-cover">
-      <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-      >
-        <circle cx="12" cy="12" r="10"></circle>
-        <circle cx="12" cy="12" r="3"></circle>
-      </svg>
-    </div>
-    <div class="song-details">
-      <div class="song-title">Bull Fight</div>
-      <div class="song-artist">Audio File</div>
-    </div>
-  </div>
-
-  <div class="controls">
-    <input
-            type="file"
-            id="audioUpload"
-            accept="audio/*"
-            style="display: none"
-    />
-    <button id="uploadBtn" style="margin-right: 10px">Upload Audio</button>
-  </div>
-
   <div class="visualization-wrapper">
     <div class="visualization-container">
       <div class="album-art">
         <img
-                src="assets/red-bull-logo.svg"
+                src="https://alex-fortunato.github.io/Website/playbar/assets/red-bull-logo.svg"
                 alt="Album Art"
                 width="150"
                 height="150"
         />
       </div>
       <button class="play-button" id="playBtn">
-        <img id="playIcon" src="assets/playbutton-icon.svg" class="button-icon" />
+        <img id="playIcon" src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg"
+             class="button-icon" />
         <img
                 id="pauseIcon"
-                src="assets/pausebutton-icon.svg"
+                src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg"
                 class="button-icon"
                 style="display: none;"
         />
@@ -66,75 +35,15 @@
       <canvas id="waveformCanvas"></canvas>
     </div>
   </div>
+  <!-- Hidden audio upload - keeping in case I want upload functionality in Squarespace -->
+  <input
+    type="file"
+    id="audioUpload"
+    accept="audio/*"
+    style="display: none;"
+    />
 </div>
 
-<div class="settings">
-  <h3>Customization Options</h3>
-
-  <div class="setting-group">
-    <div class="setting-row">
-      <span class="setting-label">Bar color:</span>
-      <input
-              type="color"
-              id="barColor"
-              value="#333333"
-              class="color-picker"
-      />
-    </div>
-
-    <div class="setting-row">
-      <span class="setting-label">Progress color:</span>
-      <input
-              type="color"
-              id="progressColor"
-              value="#4A90E2"
-              class="color-picker"
-      />
-    </div>
-
-    <div class="setting-row">
-      <span class="setting-label">Background color:</span>
-      <input
-              type="color"
-              id="bgColor"
-              value="#F1F1F1"
-              class="color-picker"
-      />
-    </div>
-
-    <div class="setting-row">
-      <span class="setting-label">Bar spacing:</span>
-      <input type="number" id="barSpacing" value="1" min="0" max="10" />
-    </div>
-
-    <div class="setting-row">
-      <span class="setting-label">Sensitivity:</span>
-      <input
-              type="range"
-              id="sensitivityControl"
-              min="1"
-              max="20"
-              step="1"
-              value="10"
-      />
-      <span id="sensitivityValue" class="setting-value">10</span>
-    </div>
-
-    <div class="setting-row">
-      <span class="setting-label">Minimum bar height:</span>
-      <input
-              type="range"
-              id="minHeightControl"
-              min="0"
-              max="10"
-              step="0.5"
-              value="1"
-      />
-      <span id="minHeightValue" class="setting-value">1</span>
-    </div>
-  </div>
-</div>
-
-<script src="visualizer.js"></script>
+<!--<script src="visualizer.js"></script>-->
 </body>
 </html>
