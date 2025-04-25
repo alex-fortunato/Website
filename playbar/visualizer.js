@@ -7,7 +7,7 @@ let audioElement;
 let isPlaying = false;
 let animationId;
 let barCount = 250; // Fixed at 200 as requested
-let barSpacing = 1;
+let barSpacing = 0;
 let sensitivity = 12; // Now adjustable with the slider
 let minBarHeight = 0.5; // Minimum bar height to ensure visibility
 let staticWaveformData = null; // Store the pre-analyzed waveform data
@@ -82,9 +82,79 @@ function initAudio() {
   }
 }
 
+// Function to update time label positions based on current waveform dimensions
+function updateTimeInfoPositions() {
+  const waveformStartX = getWaveformStartX();
+  const currentTimeElement = document.getElementById("currentTime");
+  const totalTimeElement = document.getElementById("totalTime");
+  const playButton = document.querySelector(".play-button");
+  const visualizationsContainer = document.querySelector(".visualization-container");
+
+  // get play button position and dimensions
+  const playButtonRect = playButton.getBoundingClientRect();
+  const containerRect = visualizationsContainer.getBoundingClientRect();
+
+  // Calculate available width for visualization
+  const containerWidth = containerRect.width;
+
+  // Get time display widths
+  // const currentTimeWidth = currentTimeElement.offsetWidth;
+  // const totaltimeWidth = totalTimeElement.offsetWidth;
+  // Set styles for better visibility
+  currentTimeElement.style.backgroundColor = "transparent";
+  totalTimeElement.style.backgroundColor = "transparent";
+  currentTimeElement.style.color = "rgba(255,0,0,0.59)";
+  totalTimeElement.style.color = "rgba(255,0,0,0.59)";
+
+  // Calculate play button right edge relative to container
+  const playButtonRightEdge = playButtonRect.right - containerRect.left;
+
+  if (containerWidth < 600) {
+    // Responsive positioning for small screens
+    const verticalOffset = -60;
+    const horizontalOffset = 5;
+    // Option 1: Move current time below play button (vertical stack)
+    currentTimeElement.style.left = `${playButton.offsetLeft + horizontalOffset}px`;
+    currentTimeElement.style.top = `${playButton.offsetTop + playButton.offsetHeight + verticalOffset}px`;
+    currentTimeElement.style.transform = "none"; // Clear transform
+
+    // Keep total time at the right edge
+    totalTimeElement.style.left = "auto";
+    totalTimeElement.style.right = "5px";
+    totalTimeElement.style.top = `${playButton.offsetTop + playButton.offsetHeight + verticalOffset}px`;
+    totalTimeElement.style.transform = "none";
+
+  } else {
+    // Set the left position of currentTime to be after the play button with padding
+    const timePadding = 10;
+    // Set the left position of currentTime to be at the start of the waveform
+    currentTimeElement.style.left = `${playButtonRightEdge + timePadding}px`;
+    currentTimeElement.style.top = "50%";
+    currentTimeElement.style.bottom = "auto";
+    currentTimeElement.style.transform = "translateY(-50%)";
+
+    // Position total time on the right
+    totalTimeElement.style.left = "auto";
+    totalTimeElement.style.right = "5px";
+    totalTimeElement.style.top = "50%";
+    totalTimeElement.style.transform = "translateY(-50%)";
+
+
+    // // Calculate the usable width for the waveform
+    // const usableWidth = canvas.width - waveformStartX;
+
+    // Position the total time at the right side
+    // const rightPadding = 10;
+    // totalTimeElement.style.left = "auto"; // Clear any left position
+    // totalTimeElement.style.right = `${rightPadding}px`;
+  }
+}
+
+
+
 // Resize canvas to match display size
 function resizeCanvas() {
-  const containerWidth = canvas.clientWidth;
+  const containerWidth = canvas.clientWidth - 60;
   const containerHeight = canvas.clientHeight;
 
   if (canvas.width !== containerWidth || canvas.height !== containerHeight) {
@@ -92,7 +162,7 @@ function resizeCanvas() {
     canvas.height = containerHeight;
   }
   document.documentElement.style.setProperty('--waveform-left', `${getWaveformStartX()}px`);
-  updateTimeLabelPosition();
+  updateTimeInfoPositions();
 }
 
 // Format time in MM:SS
@@ -253,6 +323,7 @@ function drawStaticWaveform() {
     ctx.fillRect(x, centerY - barHeight, barWidth, barHeight);
     ctx.fillRect(x, centerY,           barWidth, barHeight);
   }
+  updateTimeInfoPositions();
 }
 
 // Draw visualization during playback
@@ -297,6 +368,8 @@ function drawVisualization() {
   ) {
     progressPosition = paddingLeft + (audioElement.currentTime / audioElement.duration) * usableWidth;
   }
+
+  updateTimeInfoPositions();
 
   // Use real-time frequency data for the visualization during playback
   drawLiveVisualization(
@@ -456,6 +529,8 @@ async function loadAudioFile(file) {
 
   // Pre-analyze the audio to generate static waveform
   await analyzeAudio();
+
+  updateTimeInfoPositions();
 }
 
 // Update settings
@@ -566,6 +641,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Initialize audio
   initAudio();
 
+  updateTimeInfoPositions();
+
   const playIcon = document.getElementById("playIcon");
   const pauseIcon = document.getElementById("pauseIcon");
   if(isPlaying) {
@@ -620,6 +697,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 resizeCanvas();
 window.addEventListener("resize", function () {
   resizeCanvas();
+  updateTimeInfoPositions();
   // Redraw static waveform if not playing
   if (!isPlaying && staticWaveformData) {
     drawStaticWaveform();

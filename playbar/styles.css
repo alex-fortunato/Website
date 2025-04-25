@@ -67,7 +67,7 @@ body {
   font-size: 0.8em;
   color: #ff0000;
   pointer-events: none;
-  z-index: 20;
+  z-index: 30;
 
 
 }
@@ -75,7 +75,7 @@ body {
 .time-info #currentTime {
   position: absolute;
   /*left: var(--waveform-left, 210px);*/
-  left: 190px;
+  /*left: 190px;*/
   top: 50%;
   transform: translatey(-50%);
   white-space: nowrap;
@@ -87,7 +87,7 @@ body {
 .time-info #totalTime {
   position: absolute;
   /*left: var(--waveform-end, 700px);*/
-  right: -10px;
+  /*right: -10px;*/
   top: 50%;
   transform: translatey(-50%);
   white-space: nowrap;
@@ -170,7 +170,7 @@ canvas {
   display: block;
   border-radius: 4px;
   background-color: transparent;
-  padding-right: 30px;
+  padding-right: 40px;
   padding-left: 0; /* Space for album art (150px) + play button (40px) + margins */
   box-sizing: content-box;
   overflow: visible;
@@ -199,9 +199,10 @@ canvas {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .visualization-container {
     height: 100px;
+    margin-bottom: 40px;
   }
 
   .album-art {
