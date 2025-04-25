@@ -62,5 +62,30 @@ document.addEventListener("DOMContentLoaded", () => {
             hoverObj.classList.remove("active");
             defaultObj.classList.add("active");
         });
+
+        //  JavaScript click handler to ensure links open properly
+        link.addEventListener("click", (e) => {
+            // Prevent default to ensure our custom handling works
+            e.preventDefault();
+
+            // Attempt to open in new window using JavaScript
+            window.open(config.link, "_blank");
+
+            // Fallback if window.open is blocked
+            setTimeout(() => {
+                // If we're in an iframe
+                if (window !== window.top) {
+                    try {
+                        // Try to tell the parent window to navigate
+                        window.parent.postMessage({
+                            type: "openLink",
+                            url: config.link
+                        }, "*");
+                    } catch (err) {
+                        console.log("Could not communicate with parent frame");
+                    }
+                }
+            }, 100);
+        });
     });
 });
