@@ -153,7 +153,7 @@
   font-size: 1.1em;
   position: relative;
   z-index: 20;
-  color: red;
+  color: rgba(255, 2, 2, 0.92);
 }
 
 
@@ -414,7 +414,7 @@ class AudioPlayerManager {
     // Get song URL based on player ID - customize this for your audio sources
     getSongUrlById(playerId) {
         const audioSources = {
-            player1: "https://dl.dropboxusercontent.com/scl/fi/vzk3mg3iaftu7mv8yf6z1/AF_BullFight_Mockup_Master.mp3?rlkey=4dmiwmjkkhv71daw3xbv6yigp&dl=03",
+            player1: "https://dl.dropboxusercontent.com/scl/fi/vzk3mg3iaftu7mv8yf6z1/AF_BullFight_Mockup_Master.mp3?rlkey=4dmiwmjkkhv71daw3xbv6yigp&dl=0",
             player2: "https://dl.dropboxusercontent.com/scl/fi/4gscl4bx3nguexcm575sc/TheKiss_WithMIDI_V2.wav?rlkey=ph0e9dvkk8r68bmq746ow710o&dl=0"
             // Add more songs as needed
         };
@@ -456,10 +456,33 @@ class AudioPlayer {
         this.staticWaveformData = null;
         this.previousHeights = new Array(manager.barCount).fill(0);
 
+        // Loading animation variables
+        this.isLoading = true;
+        this.loadingAnimationId = null;
+        this.loadingProgress = 0;
+        this.opacity = 0.2;
+        this.fadeDirection = 1; // 1 for fade in, -1 for fade out
+
         // Initialize the player
         this.initAudio();
         this.setupEventListeners();
         this.resizeCanvas();
+
+        // Start loading animation immediately
+        this.startLoadingAnimation();
+    }
+
+    // Get the font style from the parent container
+    getInheritedFont() {
+        // Try to get the computed style from the container
+        const containerStyle = window.getComputedStyle(this.container);
+
+        // Extract the font properties
+        const fontFamily = containerStyle.fontFamily || '"Cormorant Garamond", serif';
+        const fontSize = '14px'; // You can set a default size or get it from container
+
+        // Return complete font string
+        return `${fontSize} ${fontFamily}`;
     }
 
     // Initialize audio element
@@ -478,13 +501,105 @@ class AudioPlayer {
                 await this.analyzeAudio();
             } catch (err) {
                 console.error("Error analyzing audio:", err);
+                this.stopLoadingAnimation();
+                this.showErrorMessage("Failed to analyze audio");
             }
         });
 
         // Handle loading errors
         this.audioElement.addEventListener("error", (e) => {
             console.error("Error loading audio:", e);
+            this.stopLoadingAnimation();
+            this.showErrorMessage("Error loading audio");
         });
+    }
+
+    // Show error message on canvas
+    showErrorMessage(message) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.font = this.getInheritedFont(16);
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+        this.ctx.fillText(message, this.canvas.width/2, this.canvas.height/2);
+    }
+
+    // Loading animation functions
+    startLoadingAnimation() {
+        this.isLoading = true;
+        this.loadingProgress = 0;
+        this.opacity = 0.2;
+        this.fadeDirection = 1;
+
+        if (this.loadingAnimationId) {
+            cancelAnimationFrame(this.loadingAnimationId);
+        }
+
+        // Start with a clean canvas
+        this.resizeCanvas();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Begin the loading animation loop
+        this.animateLoading();
+    }
+
+    stopLoadingAnimation() {
+        this.isLoading = false;
+
+        if (this.loadingAnimationId) {
+            cancelAnimationFrame(this.loadingAnimationId);
+            this.loadingAnimationId = null;
+        }
+    }
+
+    animateLoading() {
+        if (!this.isLoading) return;
+
+        this.loadingAnimationId = requestAnimationFrame(() => this.animateLoading());
+
+        // Clear canvas
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Update opacity for fade effect
+        this.opacity += 0.03 * this.fadeDirection;
+
+        // Reverse fade direction at min/max opacity
+        if (this.opacity >= 0.9) {
+            this.opacity = 0.9;
+            this.fadeDirection = -1;
+        } else if (this.opacity <= 0.2) {
+            this.opacity = 0.2;
+            this.fadeDirection = 1;
+        }
+
+        // Draw the loading text with fade animation
+        this.drawFadeText();
+
+        // Increment progress if not being set externally
+        if (this.loadingProgress < 0.99) {
+            this.loadingProgress += 0.003;
+        }
+    }
+
+    // Draw text with fade animation
+    drawFadeText() {
+        const text = "Loading Audio";
+
+        // Position text in the middle of the canvas
+        const paddingLeft = this.getWaveformStartX();
+        const centerX = paddingLeft + (this.canvas.width - paddingLeft) / 2;
+        const centerY = this.canvas.height / 2;
+
+        // Configure text style
+        this.ctx.font = this.getInheritedFont(11);
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+
+        // Set text color with current opacity
+        this.ctx.fillStyle = `rgba(255, 0, 0, ${this.opacity})`;
+
+        // Draw the text
+        this.ctx.fillText(text, centerX, centerY);
     }
 
     // Set up event listeners
@@ -730,6 +845,9 @@ class AudioPlayer {
     async analyzeAudio() {
         if (!this.manager.audioContext || !this.audioElement.src) return;
 
+        // Start loading animation if not already started
+        this.startLoadingAnimation();
+
         try {
             // Create a temporary offline audio context for analysis
             const offlineCtx = new OfflineAudioContext(
@@ -738,12 +856,22 @@ class AudioPlayer {
                 this.manager.audioContext.sampleRate,
             );
 
+            // Update progress to show we're starting
+            this.loadingProgress = 0.1;
+
             // Fetch the audio file
             const response = await fetch(this.audioElement.src);
+
+            // Update progress to show download complete
+            this.loadingProgress = 0.4;
+
             const arrayBuffer = await response.arrayBuffer();
 
             // Decode the audio data
             const audioData = await offlineCtx.decodeAudioData(arrayBuffer);
+
+            // Update progress to show decoding complete
+            this.loadingProgress = 0.6;
 
             // Create buffer source
             const source = offlineCtx.createBufferSource();
@@ -770,6 +898,9 @@ class AudioPlayer {
             // Get the audio data
             const channelData = audioData.getChannelData(0);
 
+            // Update progress for analysis phase
+            this.loadingProgress = 0.8;
+
             // Calculate average amplitude for each segment
             for (let i = 0; i < sampleSize; i++) {
                 const startSample = i * samplesPerBar;
@@ -783,12 +914,32 @@ class AudioPlayer {
 
                 // Store average value (normalized 0-255 for consistency with analyser output)
                 this.staticWaveformData[i] = (sum / samplesPerBar) * 255;
+
+                // Gradually update progress during analysis
+                if (i % 50 === 0) {
+                    this.loadingProgress = 0.8 + (0.2 * (i / sampleSize));
+                }
             }
+
+            // Final progress update
+            this.loadingProgress = 1.0;
+
+            // Allow the final animation state to display briefly
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            // Stop loading animation
+            this.stopLoadingAnimation();
 
             // Draw the static waveform
             this.drawStaticWaveform();
         } catch (error) {
             console.error("Error analyzing audio:", error);
+
+            // Stop loading animation
+            this.stopLoadingAnimation();
+
+            // Show error message
+            this.showErrorMessage("Error analyzing audio");
 
             // Fallback to simple waveform if analysis fails
             if (!this.staticWaveformData) {
