@@ -1,5 +1,15 @@
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<script>
+    // Add event listener to handle messages from the iframe
+    window.addEventListener("message", function(event) {
+        // Check if the message is from our iframe and contains a link to open
+        if (event.data && event.data.type === "openLink" && event.data.url) {
+            // Open the link in a new tab/window
+            window.open(event.data.url, "_blank")
+        }
+    });
+</script>
+
 <div class="alexf-social-container">
     <div class="alexf-content-wrapper">
         <h1 class="alexf-connect-title">Connect with Alex...</h1>
@@ -51,8 +61,9 @@
 }
 
 .alexf-connect-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 2rem;
+    /* Use Squarespace CSS variables without hardcoding font names */
+    font-family: inherit;
+    font-size: 1.5rem;
     font-style: italic;
     color: #ffffff !important;
     margin: 0 0 5px 0;

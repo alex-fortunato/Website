@@ -57,14 +57,14 @@
 }
 
 .song-title {
-  font-weight: bold;
+  font-weight: normal;
   margin-left: 250px;
   margin-top: 20px;
   margin-bottom: 0;
   font-size: 1.1em;
   position: relative;
   z-index: 20;
-  color: rgba(255, 2, 2, 0.92);
+  color: rgb(217, 1, 1);
 }
 
 

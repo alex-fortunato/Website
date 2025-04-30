@@ -14,7 +14,7 @@ class AudioPlayerManager {
         this.barSpacing = 0;
         this.sensitivity = 12;
         this.minBarHeight = 0.5;
-        this.barColor = "#FF0000";
+        this.barColor = "rgba(255,0,0,0.84)";
         this.progressColor = "#FFFFFF";
 
         // Initialize the players
@@ -76,6 +76,8 @@ class AudioPlayerManager {
                 player.pause();
             }
         });
+
+        this.currentlyPlaying = exceptPlayerId;
     }
 }
 
@@ -350,7 +352,7 @@ class AudioPlayer {
         this.drawStaticWaveform();
     }
 
-    // Handle canvas click for scrubbing
+    // Handle canvas click for scrubbing and switching players
     handleCanvasClick(event) {
         if (!this.audioElement || !this.audioElement.src) return;
 
@@ -361,38 +363,35 @@ class AudioPlayer {
         // Get waveform start position
         const paddingLeft = this.getWaveformStartX();
 
-        // Only process the click if it's in the waveform area
+        // Only process clicks in the waveform area (after padding)
         if (clickX < paddingLeft) {
             console.log("Click ignored - in album art/play button area");
+
+            // If clicked in the non-waveform area, just toggle playback
+            if (!this.isPlaying) {
+                this.togglePlayback();
+            }
             return;
         }
 
-        // Calculate the scaling factor between browser and canvas coordinates
+        // We're in the waveform area, so calculate the position
         const canvasScaleFactor = this.canvas.width / this.canvas.clientWidth;
-
-        // Scale the click position from browser coordinates to canvas coordinates
         const adjustedClickX = (clickX - paddingLeft) * canvasScaleFactor;
-
-        // Calculate the usable width in canvas coordinates
         const usableWidth = this.canvas.width - paddingLeft;
-
-        // Calculate percentage using properly scaled coordinates
         const clickPercent = adjustedClickX / usableWidth;
-
-        // Clamp percentage between 0 and 1
         const clampedPercent = Math.max(0, Math.min(1, clickPercent));
 
         // Set the audio playback position
         if (this.audioElement.duration) {
             this.audioElement.currentTime = clampedPercent * this.audioElement.duration;
 
-            // Update the visualization
-            if (this.isPlaying) {
-                // If playing, the animation frame will handle it
+            // If not already playing, start playback
+            if (!this.isPlaying) {
+                // This will pause other players and start this one
+                this.togglePlayback();
             } else {
-                // If paused, redraw static waveform with new position
+                // Already playing, just update displays and continue
                 this.updateTimeDisplays();
-                this.drawStaticWaveform();
             }
         }
     }
