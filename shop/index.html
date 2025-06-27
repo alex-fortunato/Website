@@ -1,10 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<!-- Shop Grid Container -->
+<div id="product-grid" class="product-grid"></div>
+
+<!-- Styles for Product Grid -->
+<style>
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .product-card {
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.2s ease;
+    }
+    .product-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .product-card img {
+        width: 100%;
+        object-fit: cover;
+        height: 200px;
+    }
+    .product-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .product-title {
+        font-size: 1.125rem;
+        margin: 0 0 0.5rem;
+    }
+    .product-price {
+        font-weight: bold;
+        margin: 0 0 0.5rem;
+    }
+    .product-description {
+        flex: 1;
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 1rem;
+    }
+    .product-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    .btn {
+        flex: 1;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-learn {
+        background: transparent;
+        color: #333;
+        border: 1px solid #333;
+    }
+    .btn-learn:hover {
+        background: #333;
+        color: #fff;
+    }
+    .btn-cart {
+        background: #333;
+        color: #fff;
+    }
+    .btn-cart:hover {
+        background: #555;
+    }
+    .no-products,
+    .error {
+        text-align: center;
+        color: #777;
+        font-size: 1rem;
+        padding: 2rem;
+    }
+</style>
+
+<!-- JavaScript to Fetch and Render Products -->
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const grid = document.getElementById('product-grid');
+        try {
+            const response = await fetch('/api/catalog/products?filter.published=true');
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            console.log('API response:', data);
+
+            // Determine products array (support different API structures)
+            const products = Array.isArray(data)
+                ? data
+                : Array.isArray(data.products)
+                    ? data.products
+                    : Array.isArray(data.items)
+                        ? data.items
+                        : [];
+
+            if (!products.length) {
+                grid.innerHTML = '<p class="no-products">No products found.</p>';
+                return;
+            }
+
+            products.forEach(product => {
+                const variant = Array.isArray(product.variants) && product.variants[0];
+                const image = Array.isArray(product.images) && product.images[0];
+                if (!variant) {
+                    console.warn('Product skipped: no variants', product);
+                    return;
+                }
+
+                // Create card element
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                // Product page URL fallback
+                const pageUrl = product.productPageUrl || product.url || '#';
+
+                // Image link
+                const imgLink = document.createElement('a');
+                imgLink.href = pageUrl;
+                const imgEl = document.createElement('img');
+                imgEl.src = image && image.url ? image.url : 'https://via.placeholder.com/300x200?text=No+Image';
+                imgEl.alt = product.title || 'Product Image';
+                imgLink.appendChild(imgEl);
+                card.appendChild(imgLink);
+
+                // Details container
+                const details = document.createElement('div');
+                details.className = 'product-details';
+
+                // Title
+                const title = document.createElement('h2');
+                title.className = 'product-title';
+                title.textContent = product.title || 'Untitled';
+                details.appendChild(title);
+
+                // Price
+                const price = document.createElement('p');
+                price.className = 'product-price';
+                price.textContent = variant.price != null ? `$${variant.price.toFixed(2)}` : 'Price Unavailable';
+                details.appendChild(price);
+
+                // Short description
+                const desc = document.createElement('p');
+                desc.className = 'product-description';
+                desc.textContent = product.description || '';
+                details.appendChild(desc);
+
+                // Action buttons
+                const actions = document.createElement('div');
+                actions.className = 'product-actions';
+
+                // Learn More button
+                const learnBtn = document.createElement('a');
+                learnBtn.className = 'btn btn-learn';
+                learnBtn.href = pageUrl;
+                learnBtn.textContent = 'Learn More';
+                actions.appendChild(learnBtn);
+
+                // Add to Cart button
+                const cartBtn = document.createElement('button');
+                cartBtn.className = 'btn btn-cart';
+                cartBtn.textContent = 'Add to Cart';
+                cartBtn.addEventListener('click', () => {
+                    window.location.href = `/cart?add=${variant.id}:1`;
+                });
+                actions.appendChild(cartBtn);
+
+                details.appendChild(actions);
+                card.appendChild(details);
+                grid.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error loading products:', error);
+            grid.innerHTML = '<p class="error">Unable to load products. Please try again later.</p>';
+        }
+    });
+</script>
