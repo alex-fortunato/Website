@@ -62,8 +62,8 @@ class AudioPlayerManager {
     getSongUrlById(playerId) {
         const audioSources = {
             player1: "https://dl.dropboxusercontent.com/scl/fi/vzk3mg3iaftu7mv8yf6z1/AF_BullFight_Mockup_Master.mp3?rlkey=4dmiwmjkkhv71daw3xbv6yigp&dl=0",
-            player2: "https://dl.dropboxusercontent.com/scl/fi/4gscl4bx3nguexcm575sc/TheKiss_WithMIDI_V2.wav?rlkey=ph0e9dvkk8r68bmq746ow710o&dl=0"
-            // Add more songs as needed
+            player2: "https://dl.dropboxusercontent.com/scl/fi/p7xq8za1310gilf6t6fml/Outlandish_1m03_Website.wav?rlkey=eo37maygadlcpsc06mv9vcmjp&dl=0",
+            player3: "https://dl.dropboxusercontent.com/scl/fi/4gscl4bx3nguexcm575sc/TheKiss_WithMIDI_V2.wav?rlkey=ph0e9dvkk8r68bmq746ow710o&dl=0",
         };
 
         return audioSources[playerId] || "";

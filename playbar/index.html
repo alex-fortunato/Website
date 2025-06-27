@@ -10,7 +10,7 @@
       <div class="song-info">
         <div class="song-title">Bull Fight / Sounds of Red Bull 2025</div>
       </div>
-      </div>
+    </div>
 
     <div class="visualization-wrapper">
       <div class="visualization-container">
@@ -35,11 +35,45 @@
     </div>
   </div>
 
-  <!-- Player 2 -->
+  <!-- Player 3 -->
   <div class="player-container" data-player-id="player2">
     <!-- Song info is now placed before the visualization wrapper -->
     <div class="player-header">
-     <div class="song-info">
+      <div class="song-info">
+        <div class="song-title">Transformation / Recorded at AIR Studios</div>
+      </div>
+    </div>
+
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art">
+          <img
+                  src="https://alex-fortunato.github.io/Website/playbar/assets/outlandish-music-logo.svg"
+                  alt="Album Art"
+                  width="150"
+                  height="150"
+          />
+        </div>
+        <button class="play-button">
+          <img class="play-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg" class="button-icon" />
+          <img class="pause-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg" class="button-icon" style="display: none;" />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add more player instances as needed here -->
+
+  <!-- Player 2 -->
+  <div class="player-container" data-player-id="player3">
+    <!-- Song info is now placed before the visualization wrapper -->
+    <div class="player-header">
+      <div class="song-info">
         <div class="song-title">The Kiss (Excerpt) / Budapest Art Orchestra</div>
       </div>
     </div>
@@ -66,8 +100,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Add more player instances as needed here -->
 </div>
 
 <!-- Hidden audio upload - keeping in case I want upload functionality in Squarespace -->
