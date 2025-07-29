@@ -69,6 +69,7 @@
 .song-title {
   font-family: inherit;
   font-weight: normal;
+  font-style: italic;
   margin-left: 250px;
   margin-top: 20px;
   margin-bottom: 0;
