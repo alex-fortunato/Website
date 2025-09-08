@@ -4,12 +4,44 @@
 <div class="playlist-container">
   <!-- This container holds all player instances -->
 
+  <!-- Player 0 - Midnight Riot -->
+  <div class="player-container" data-player-id="player0">
+    <!-- Song info is now placed before the visualization wrapper -->
+    <div class="player-header">
+      <div class="song-info">
+        <div class="song-title">Midnight Riot - Recorded at Synchron Stage, Vienna</div>
+      </div>
+    </div>
+
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art">
+          <img
+                  src="https://alex-fortunato.github.io/Website/playbar/assets/theorchestrals-albumart.png"
+                  alt="Album Art"
+                  width="150"
+                  height="150"
+          />
+        </div>
+        <button class="play-button">
+          <img class="play-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg" class="button-icon" />
+          <img class="pause-icon" src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg" class="button-icon" style="display: none;" />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- Player 1 -->
   <div class="player-container" data-player-id="player1">
     <!-- Song info is now placed before the visualization wrapper -->
     <div class="player-header">
       <div class="song-info">
-        <div class="song-title">"Bull Fight" - Sounds of Red Bull 2025</div>
+        <div class="song-title">Midnight Riot - Original Version</div>
       </div>
     </div>
 
@@ -41,7 +73,7 @@
     <!-- Song info is now placed before the visualization wrapper -->
     <div class="player-header">
       <div class="song-info">
-        <div class="song-title">"Transformation" - Recorded at AIR Studios</div>
+        <div class="song-title">"Transformation" - Recorded at AIR Studios, London</div>
       </div>
     </div>
 
@@ -535,6 +567,7 @@ class AudioPlayerManager {
     // Get song URL based on player ID - customize this for your audio sources
     getSongUrlById(playerId) {
         const audioSources = {
+            player0: "https://dl.dropboxusercontent.com/scl/fi/97rbnoh95pg2g5accyme8/MidnightRiot_SoundsOfRedBull.com.mp3?rlkey=ztwz40m947wnby5ao9mzy9ex5&dl=0",
             player1: "https://dl.dropboxusercontent.com/scl/fi/vzk3mg3iaftu7mv8yf6z1/AF_BullFight_Mockup_Master.mp3?rlkey=4dmiwmjkkhv71daw3xbv6yigp&dl=0",
             player2: "https://dl.dropboxusercontent.com/scl/fi/oqz6s08sbfrugc5adtcaz/Outlandish_Website_Master.wav?rlkey=c70dir4w3n3xoyzdv5i974xjc&dl=0",
             player3: "https://dl.dropboxusercontent.com/scl/fi/lkgusbpux5scia5b1nv6l/TheChase_Roughmix_4.wav?rlkey=zrapcvgi7bibqgdfpr0fo16fk&st=ebgywwqg&dl=0",

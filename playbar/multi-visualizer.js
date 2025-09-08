@@ -61,6 +61,7 @@ class AudioPlayerManager {
     // Get song URL based on player ID - customize this for your audio sources
     getSongUrlById(playerId) {
         const audioSources = {
+            player0: "https://dl.dropboxusercontent.com/scl/fi/97rbnoh95pg2g5accyme8/MidnightRiot_SoundsOfRedBull.com.mp3?rlkey=ztwz40m947wnby5ao9mzy9ex5&dl=0",
             player1: "https://dl.dropboxusercontent.com/scl/fi/vzk3mg3iaftu7mv8yf6z1/AF_BullFight_Mockup_Master.mp3?rlkey=4dmiwmjkkhv71daw3xbv6yigp&dl=0",
             player2: "https://dl.dropboxusercontent.com/scl/fi/oqz6s08sbfrugc5adtcaz/Outlandish_Website_Master.wav?rlkey=c70dir4w3n3xoyzdv5i974xjc&dl=0",
             player3: "https://dl.dropboxusercontent.com/scl/fi/lkgusbpux5scia5b1nv6l/TheChase_Roughmix_4.wav?rlkey=zrapcvgi7bibqgdfpr0fo16fk&st=ebgywwqg&dl=0",
