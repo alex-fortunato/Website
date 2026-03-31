@@ -1,0 +1,919 @@
+
+
+<div class="playlist-container">
+
+  <!-- Player 0 - Dayspring Motel -->
+  <div class="player-container" data-player-id="player0">
+    <div class="player-header">
+      <div class="song-info">
+        <div class="song-title">Dayspring Motel</div>
+      </div>
+    </div>
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art">
+          <img
+            src="https://alex-fortunato.github.io/Website/home-demos/assets/motel-neon-sign.png"
+            alt="Dayspring Motel"
+            width="150"
+            height="150"
+          />
+        </div>
+        <button class="play-button">
+          <img
+            class="play-icon"
+            src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg"
+          />
+          <img
+            class="pause-icon"
+            src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg"
+            style="display: none"
+          />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Player 1 - Romance Theme -->
+  <div class="player-container" data-player-id="player1">
+    <div class="player-header">
+      <div class="song-info">
+        <div class="song-title">Romance Theme</div>
+      </div>
+    </div>
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art">
+          <img
+            src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%231a2a2e%22%20rx%3D%228%22%2F%3E%3Ctext%20x%3D%2275%22%20y%3D%2298%22%20font-size%3D%2272%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338B2C3%22%20font-family%3D%22sans-serif%22%3E%E2%99%AA%3C%2Ftext%3E%3C%2Fsvg%3E"
+            alt="Album Art"
+            width="150"
+            height="150"
+          />
+        </div>
+        <button class="play-button">
+          <img
+            class="play-icon"
+            src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg"
+          />
+          <img
+            class="pause-icon"
+            src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg"
+            style="display: none"
+          />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+.playlist-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 5px;
+  overflow: visible;
+}
+
+.player-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.song-info {
+  width: 100%;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+  position: relative;
+  z-index: 20;
+}
+
+.song-title {
+  font-family: inherit;
+  font-weight: normal;
+  font-style: italic;
+  margin-left: 190px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  width: calc(100% - 230px);
+  text-align: center;
+  font-size: 1.1em;
+  position: relative;
+  z-index: 20;
+  color: rgb(255, 255, 255);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.time-info {
+  position: absolute;
+  width: 100%;
+  font-size: 0.8em;
+  color: #38b2c3;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.time-info .current-time,
+.time-info span.current-time {
+  position: absolute;
+  top: 50%;
+  transform: translatey(-50%);
+  white-space: nowrap;
+  background-color: transparent;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.time-info .total-time,
+.time-info span.total-time {
+  position: absolute;
+  top: 50%;
+  transform: translatey(-50%);
+  white-space: nowrap;
+  background-color: transparent;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.visualization-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  overflow: visible;
+}
+
+.visualization-container {
+  width: 100%;
+  height: 120px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.album-art {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.album-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.play-button {
+  position: relative;
+  left: 155px;
+  z-index: 10;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.button-icon,
+.play-icon,
+.pause-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: 0 auto;
+  filter: brightness(0) invert(1);
+}
+
+.waveform-canvas,
+canvas.waveform-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 4px;
+  background-color: transparent;
+  padding-right: 40px;
+  padding-left: 0;
+  box-sizing: content-box;
+  overflow: visible;
+}
+
+@media (max-width: 768px) {
+  .song-title {
+    margin-left: 190px;
+    width: calc(100% - 230px);
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .player-container {
+    padding: 15px 10px;
+  }
+  .visualization-container {
+    margin-top: 10px;
+  }
+  .album-art {
+    width: 100px;
+    height: 100px;
+  }
+  .play-button {
+    left: 105px;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-container {
+    padding: 10px 5px;
+  }
+  .player-header {
+    margin-bottom: 0;
+  }
+  .song-title {
+    font-size: 0.9em;
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+  .visualization-container {
+    height: 90px;
+    margin-top: 5px;
+  }
+  .album-art {
+    width: 80px;
+    height: 80px;
+  }
+  .play-button {
+    left: 90px;
+    width: 40px;
+    height: 40px;
+  }
+  .waveform-canvas {
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .song-title {
+    font-size: 0.85em;
+    margin-bottom: 8px;
+  }
+  .visualization-container {
+    height: 80px;
+  }
+  .album-art {
+    width: 70px;
+    height: 70px;
+  }
+  .play-button {
+    left: 80px;
+    width: 35px;
+    height: 35px;
+  }
+  .button-icon,
+  .play-icon,
+  .pause-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+</style>
+
+<script>
+class AudioPlayerManager {
+    constructor() {
+        this.players = new Map();
+        this.currentlyPlaying = null;
+        this.audioContext = null;
+        this.analyser = null;
+
+        this.initAudioContext();
+
+        this.barCount = 250;
+        this.barSpacing = 0;
+        this.sensitivity = 12;
+        this.minBarHeight = 0.5;
+        this.barColor = "rgba(56, 178, 195, 0.84)";
+        this.progressColor = "#FFFFFF";
+
+        this.initPlayers();
+
+        window.addEventListener("resize", () => {
+            this.players.forEach(player => {
+                player.resizeCanvas();
+                player.updateTimeInfoPositions();
+                if (!player.isPlaying && player.staticWaveformData) {
+                    player.drawStaticWaveform();
+                }
+            });
+        });
+    }
+
+    initAudioContext() {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        this.analyser = this.audioContext.createAnalyser();
+        this.analyser.fftSize = 1024;
+    }
+
+    initPlayers() {
+        const playerContainers = document.querySelectorAll('.player-container');
+        playerContainers.forEach((container, index) => {
+            const playerId = container.dataset.playerId || `player${index + 1}`;
+            const songData = {
+                id: playerId,
+                title: container.querySelector('.song-title').textContent.trim(),
+                audio: this.getSongUrlById(playerId),
+                albumArt: container.querySelector('.album-art img').src
+            };
+            const player = new AudioPlayer(this, container, songData);
+            this.players.set(playerId, player);
+        });
+    }
+
+    getSongUrlById(playerId) {
+        const audioSources = {
+            player0: "https://dl.dropboxusercontent.com/scl/fi/0oj507yaoqik1k6yfvday/HOME_Theme1_AF_v.1.0.wav?rlkey=glfvk7pq50qhmpsa3r4mco1d0&dl=0",
+            player1: "https://dl.dropboxusercontent.com/scl/fi/opjmr67h8c3m07qlegsce/Romance_Theme.wav?rlkey=i4qi6eidry6t860twvkxpv2n4&dl=0",
+        };
+        return audioSources[playerId] || "";
+    }
+
+    pauseAllExcept(exceptPlayerId) {
+        this.players.forEach((player, playerId) => {
+            if (playerId !== exceptPlayerId && player.isPlaying) {
+                player.pause();
+            }
+        });
+        this.currentlyPlaying = exceptPlayerId;
+    }
+}
+
+class AudioPlayer {
+    constructor(manager, container, songData) {
+        this.manager = manager;
+        this.container = container;
+        this.songData = songData;
+
+        this.canvas = container.querySelector('.waveform-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.playButton = container.querySelector('.play-button');
+        this.playIcon = container.querySelector('.play-icon');
+        this.pauseIcon = container.querySelector('.pause-icon');
+        this.currentTimeDisplay = container.querySelector('.current-time');
+        this.totalTimeDisplay = container.querySelector('.total-time');
+
+        this.audioElement = null;
+        this.audioSource = null;
+        this.isPlaying = false;
+        this.animationId = null;
+        this.staticWaveformData = null;
+        this.previousHeights = new Array(manager.barCount).fill(0);
+
+        this.isLoading = true;
+        this.loadingAnimationId = null;
+        this.loadingProgress = 0;
+        this.opacity = 0.2;
+        this.fadeDirection = 1;
+
+        this.initAudio();
+        this.setupEventListeners();
+        this.resizeCanvas();
+        this.startLoadingAnimation();
+    }
+
+    getInheritedFont() {
+        const containerStyle = window.getComputedStyle(this.container);
+        const fontFamily = containerStyle.fontFamily || '"Cormorant Garamond", serif';
+        return `14px ${fontFamily}`;
+    }
+
+    initAudio() {
+        this.audioElement = new Audio();
+        this.audioElement.crossOrigin = "anonymous";
+        this.audioElement.src = this.songData.audio;
+
+        this.audioElement.addEventListener("ended", () => this.handleAudioEnd());
+
+        this.audioElement.addEventListener("loadedmetadata", async () => {
+            this.updateTimeDisplays();
+            try {
+                await this.analyzeAudio();
+            } catch (err) {
+                console.error("Error analyzing audio:", err);
+                this.stopLoadingAnimation();
+                this.showErrorMessage("Failed to analyze audio");
+            }
+        });
+
+        this.audioElement.addEventListener("error", (e) => {
+            console.error("Error loading audio:", e);
+            this.stopLoadingAnimation();
+            this.showErrorMessage("Error loading audio");
+        });
+    }
+
+    showErrorMessage(message) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.font = this.getInheritedFont(16);
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillStyle = 'rgba(56, 178, 195, 0.8)';
+        this.ctx.fillText(message, this.canvas.width / 2, this.canvas.height / 2);
+    }
+
+    startLoadingAnimation() {
+        this.isLoading = true;
+        this.loadingProgress = 0;
+        this.opacity = 0.2;
+        this.fadeDirection = 1;
+
+        if (this.loadingAnimationId) {
+            cancelAnimationFrame(this.loadingAnimationId);
+        }
+
+        this.resizeCanvas();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.animateLoading();
+    }
+
+    stopLoadingAnimation() {
+        this.isLoading = false;
+        if (this.loadingAnimationId) {
+            cancelAnimationFrame(this.loadingAnimationId);
+            this.loadingAnimationId = null;
+        }
+    }
+
+    animateLoading() {
+        if (!this.isLoading) return;
+
+        this.loadingAnimationId = requestAnimationFrame(() => this.animateLoading());
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.opacity += 0.03 * this.fadeDirection;
+        if (this.opacity >= 0.9) {
+            this.opacity = 0.9;
+            this.fadeDirection = -1;
+        } else if (this.opacity <= 0.2) {
+            this.opacity = 0.2;
+            this.fadeDirection = 1;
+        }
+
+        this.drawFadeText();
+
+        if (this.loadingProgress < 0.99) {
+            this.loadingProgress += 0.003;
+        }
+    }
+
+    drawFadeText() {
+        const text = "Loading Audio";
+        const paddingLeft = this.getWaveformStartX();
+        const centerX = paddingLeft + (this.canvas.width - paddingLeft) / 2;
+        const centerY = this.canvas.height / 2;
+
+        this.ctx.font = this.getInheritedFont(11);
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillStyle = `rgba(56, 178, 195, ${this.opacity})`;
+        this.ctx.fillText(text, centerX, centerY);
+    }
+
+    setupEventListeners() {
+        this.playButton.addEventListener('click', () => this.togglePlayback());
+        this.canvas.addEventListener('click', (event) => this.handleCanvasClick(event));
+        this.canvas.addEventListener('mousemove', () => {
+            this.canvas.style.cursor = 'pointer';
+        });
+    }
+
+    togglePlayback() {
+        if (!this.audioElement || !this.audioElement.src) {
+            console.error("No audio source available");
+            return;
+        }
+
+        if (this.manager.audioContext.state === "suspended") {
+            this.manager.audioContext.resume();
+        }
+
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.manager.pauseAllExcept(this.songData.id);
+
+            if (!this.audioSource) {
+                this.audioSource = this.manager.audioContext.createMediaElementSource(this.audioElement);
+                this.audioSource.connect(this.manager.analyser);
+                this.manager.analyser.connect(this.manager.audioContext.destination);
+            }
+
+            this.play();
+        }
+    }
+
+    play() {
+        if (!this.staticWaveformData && this.audioElement.duration > 0) {
+            this.analyzeAudio().then(() => {
+                this.startPlayback();
+            });
+        } else {
+            this.startPlayback();
+        }
+    }
+
+    startPlayback() {
+        this.audioElement.play();
+        this.playIcon.style.display = "none";
+        this.pauseIcon.style.display = "block";
+        this.isPlaying = true;
+        this.manager.currentlyPlaying = this.songData.id;
+        this.drawVisualization();
+    }
+
+    pause() {
+        this.audioElement.pause();
+        this.playIcon.style.display = "block";
+        this.pauseIcon.style.display = "none";
+        this.isPlaying = false;
+
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+
+        this.drawStaticWaveform();
+    }
+
+    handleAudioEnd() {
+        this.isPlaying = false;
+        this.playIcon.style.display = "block";
+        this.pauseIcon.style.display = "none";
+
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+
+        this.audioElement.currentTime = 0;
+        this.updateTimeDisplays();
+        this.drawStaticWaveform();
+    }
+
+    handleCanvasClick(event) {
+        if (!this.audioElement || !this.audioElement.src) return;
+
+        const rect = this.canvas.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const paddingLeft = this.getWaveformStartX();
+
+        if (clickX < paddingLeft) {
+            if (!this.isPlaying) {
+                this.togglePlayback();
+            }
+            return;
+        }
+
+        const canvasScaleFactor = this.canvas.width / this.canvas.clientWidth;
+        const adjustedClickX = (clickX - paddingLeft) * canvasScaleFactor;
+        const usableWidth = this.canvas.width - paddingLeft;
+        const clickPercent = adjustedClickX / usableWidth;
+        const clampedPercent = Math.max(0, Math.min(1, clickPercent));
+
+        if (this.audioElement.duration) {
+            this.audioElement.currentTime = clampedPercent * this.audioElement.duration;
+
+            if (!this.isPlaying) {
+                this.togglePlayback();
+            } else {
+                this.updateTimeDisplays();
+            }
+        }
+    }
+
+    getWaveformStartX() {
+        const art = this.container.querySelector(".album-art");
+        const button = this.container.querySelector(".play-button");
+
+        const artW = art?.offsetWidth || 150;
+        const btnW = button?.offsetWidth || 10;
+        const margin = -20;
+
+        const canvasPadding = parseFloat(getComputedStyle(this.canvas).paddingLeft) || 0;
+        return artW + btnW + margin + canvasPadding;
+    }
+
+    resizeCanvas() {
+        const containerWidth = this.canvas.clientWidth - 60;
+        const containerHeight = this.canvas.clientHeight;
+
+        if (this.canvas.width !== containerWidth || this.canvas.height !== containerHeight) {
+            this.canvas.width = containerWidth;
+            this.canvas.height = containerHeight;
+        }
+        this.updateTimeInfoPositions();
+    }
+
+    updateTimeDisplays() {
+        if (this.audioElement && !isNaN(this.audioElement.duration)) {
+            this.currentTimeDisplay.textContent = this.formatTime(this.audioElement.currentTime);
+            this.totalTimeDisplay.textContent = this.formatTime(this.audioElement.duration);
+        }
+    }
+
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return mins + ":" + (secs < 10 ? "0" : "") + secs;
+    }
+
+    updateTimeInfoPositions() {
+        const currentTimeElement = this.currentTimeDisplay;
+        const totalTimeElement = this.totalTimeDisplay;
+        const playButton = this.playButton;
+        const visualizationsContainer = this.container.querySelector(".visualization-container");
+
+        const playButtonRect = playButton.getBoundingClientRect();
+        const containerRect = visualizationsContainer.getBoundingClientRect();
+        const containerWidth = containerRect.width;
+
+        currentTimeElement.style.backgroundColor = "transparent";
+        totalTimeElement.style.backgroundColor = "transparent";
+        currentTimeElement.style.color = "rgb(56, 178, 195)";
+        totalTimeElement.style.color = "rgb(56, 178, 195)";
+
+        const playButtonRightEdge = playButtonRect.right - containerRect.left;
+
+        if (containerWidth < 600) {
+            const verticalOffset = -60;
+            const horizontalOffset = 5;
+
+            currentTimeElement.style.left = `${playButton.offsetLeft + horizontalOffset}px`;
+            currentTimeElement.style.top = `${playButton.offsetTop + playButton.offsetHeight + verticalOffset}px`;
+            currentTimeElement.style.transform = "none";
+
+            totalTimeElement.style.left = "auto";
+            totalTimeElement.style.right = "5px";
+            totalTimeElement.style.top = `${playButton.offsetTop + playButton.offsetHeight + verticalOffset}px`;
+            totalTimeElement.style.transform = "none";
+        } else {
+            const timePadding = 10;
+
+            currentTimeElement.style.left = `${playButtonRightEdge + timePadding}px`;
+            currentTimeElement.style.top = "50%";
+            currentTimeElement.style.bottom = "auto";
+            currentTimeElement.style.transform = "translateY(-50%)";
+
+            totalTimeElement.style.left = "auto";
+            totalTimeElement.style.right = "5px";
+            totalTimeElement.style.top = "50%";
+            totalTimeElement.style.transform = "translateY(-50%)";
+        }
+    }
+
+    async analyzeAudio() {
+        if (!this.manager.audioContext || !this.audioElement.src) return;
+
+        this.startLoadingAnimation();
+
+        try {
+            const offlineCtx = new OfflineAudioContext(
+                1,
+                this.audioElement.duration * this.manager.audioContext.sampleRate,
+                this.manager.audioContext.sampleRate,
+            );
+
+            this.loadingProgress = 0.1;
+
+            const response = await fetch(this.audioElement.src);
+            this.loadingProgress = 0.4;
+
+            const arrayBuffer = await response.arrayBuffer();
+            const audioData = await offlineCtx.decodeAudioData(arrayBuffer);
+            this.loadingProgress = 0.6;
+
+            const source = offlineCtx.createBufferSource();
+            source.buffer = audioData;
+
+            const offlineAnalyser = offlineCtx.createAnalyser();
+            offlineAnalyser.fftSize = 1024;
+
+            source.connect(offlineAnalyser);
+            offlineAnalyser.connect(offlineCtx.destination);
+            source.start(0);
+
+            const sampleSize = this.manager.barCount;
+            this.staticWaveformData = new Array(sampleSize).fill(0);
+
+            const samplesPerBar = Math.floor(audioData.length / sampleSize);
+            const channelData = audioData.getChannelData(0);
+
+            this.loadingProgress = 0.8;
+
+            for (let i = 0; i < sampleSize; i++) {
+                const startSample = i * samplesPerBar;
+                const endSample = Math.min(startSample + samplesPerBar, audioData.length);
+                let sum = 0;
+
+                for (let j = startSample; j < endSample; j++) {
+                    sum += Math.abs(channelData[j]);
+                }
+
+                this.staticWaveformData[i] = (sum / samplesPerBar) * 255;
+
+                if (i % 50 === 0) {
+                    this.loadingProgress = 0.8 + (0.2 * (i / sampleSize));
+                }
+            }
+
+            this.loadingProgress = 1.0;
+
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            this.stopLoadingAnimation();
+            this.drawStaticWaveform();
+        } catch (error) {
+            console.error("Error analyzing audio:", error);
+            this.stopLoadingAnimation();
+            this.showErrorMessage("Error analyzing audio");
+
+            if (!this.staticWaveformData) {
+                this.staticWaveformData = new Array(this.manager.barCount).fill(0).map(
+                    () => Math.random() * 40 + 10,
+                );
+                this.drawStaticWaveform();
+            }
+        }
+    }
+
+    drawStaticWaveform() {
+        if (!this.staticWaveformData) return;
+
+        this.resizeCanvas();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const paddingLeft = this.getWaveformStartX();
+        const totalCanvasWidth = this.canvas.width;
+        const usableWidth = totalCanvasWidth - paddingLeft;
+
+        const totalBarSpace = this.manager.barSpacing * (this.manager.barCount - 1);
+        const barWidth = (usableWidth - totalBarSpace) / this.manager.barCount;
+
+        const centerY = this.canvas.height / 2;
+
+        for (let i = 0; i < this.manager.barCount; i++) {
+            const normalized = this.staticWaveformData[i] / 255;
+            const boosted = Math.min(normalized * (this.manager.sensitivity / 5), 1);
+            const rawHeight = boosted * (this.canvas.height * 0.45);
+            const barHeight = Math.min(
+                Math.max(rawHeight, this.manager.minBarHeight),
+                this.canvas.height / 2
+            );
+
+            const x = paddingLeft + i * (barWidth + this.manager.barSpacing);
+
+            let progressPosition = 0;
+            if (this.audioElement && !isNaN(this.audioElement.duration)) {
+                progressPosition = paddingLeft
+                    + (this.audioElement.currentTime / this.audioElement.duration) * usableWidth;
+            }
+            const isPlayed = x <= progressPosition;
+            this.ctx.fillStyle = isPlayed ? this.manager.progressColor : this.manager.barColor;
+
+            this.ctx.save();
+            this.ctx.shadowColor = isPlayed ? this.manager.progressColor : this.manager.barColor;
+            this.ctx.shadowBlur = 5;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+
+            this.ctx.fillRect(x, centerY - barHeight, barWidth, barHeight);
+            this.ctx.fillRect(x, centerY, barWidth, barHeight);
+
+            this.ctx.restore();
+        }
+        this.updateTimeInfoPositions();
+    }
+
+    drawVisualization() {
+        if (!this.manager.audioContext || !this.manager.analyser) return;
+
+        this.animationId = requestAnimationFrame(() => this.drawVisualization());
+        this.resizeCanvas();
+
+        const bufferLength = this.manager.analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        this.manager.analyser.getByteFrequencyData(dataArray);
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.updateTimeDisplays();
+
+        const paddingLeft = this.getWaveformStartX();
+        const totalCanvasWidth = this.canvas.width;
+        const usableWidth = totalCanvasWidth - paddingLeft;
+
+        const totalBarSpace = this.manager.barSpacing * (this.manager.barCount - 1);
+        const barWidth = (usableWidth - totalBarSpace) / this.manager.barCount;
+
+        const sensitivityFactor = this.manager.sensitivity / 5;
+
+        let progressPosition = 0;
+        if (
+            this.audioElement &&
+            !isNaN(this.audioElement.duration) &&
+            this.audioElement.duration > 0
+        ) {
+            progressPosition = paddingLeft + (this.audioElement.currentTime / this.audioElement.duration) * usableWidth;
+        }
+
+        this.updateTimeInfoPositions();
+        this.drawLiveVisualization(dataArray, barWidth, sensitivityFactor, progressPosition);
+    }
+
+    drawLiveVisualization(dataArray, barWidth, sensitivityFactor, progressPosition) {
+        const easingUp = 1.5;
+        const easingDown = 1.5;
+        const bufferLength = this.manager.analyser.frequencyBinCount;
+
+        const paddingLeft = this.getWaveformStartX();
+        const centerY = this.canvas.height / 2;
+
+        for (let i = 0; i < this.manager.barCount; i++) {
+            const normIndex = i / this.manager.barCount;
+            const logIndex = Math.floor(Math.pow(normIndex, 2) * (bufferLength - 1));
+            const dataIndex = Math.min(logIndex, bufferLength - 1);
+            let value = dataArray[dataIndex] || 0;
+            const lowEndCut = 1 - Math.pow(1 - normIndex, 1.5);
+            value *= lowEndCut;
+            const normalized = value / 255;
+            const boosted = Math.min(normalized * sensitivityFactor, 1);
+            const targetHeight = boosted * (this.canvas.height * 0.45);
+
+            const currentHeight = this.previousHeights[i] || 0;
+            const easeFactor = targetHeight > currentHeight ? easingUp : easingDown;
+            const easedHeight = currentHeight + (targetHeight - currentHeight) * easeFactor;
+            this.previousHeights[i] = easedHeight;
+
+            const barHeight = Math.min(Math.max(easedHeight, this.manager.minBarHeight), this.canvas.height / 2);
+            const x = paddingLeft + i * (barWidth + this.manager.barSpacing);
+            const isPlayed = x <= progressPosition;
+
+            const fillCol = isPlayed ? this.manager.progressColor : this.manager.barColor;
+
+            this.ctx.save();
+            this.ctx.fillStyle = fillCol;
+            this.ctx.shadowColor = fillCol;
+            this.ctx.shadowBlur = 5;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+
+            this.ctx.fillRect(x, centerY - barHeight, barWidth, barHeight);
+            this.ctx.fillRect(x, centerY, barWidth, barHeight);
+
+            this.ctx.restore();
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const playerManager = new AudioPlayerManager();
+});
+</script>
