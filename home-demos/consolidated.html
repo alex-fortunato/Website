@@ -95,6 +95,36 @@
     </div>
   </div>
 
+  <!-- Player 3 - Hola, María -->
+  <div class="player-container" data-player-id="player3">
+    <div class="player-header">
+      <div class="song-info">
+        <div class="song-title">Hola, María</div>
+      </div>
+    </div>
+    <div class="visualization-wrapper">
+      <div class="visualization-container">
+        <div class="album-art"></div>
+        <button class="play-button">
+          <img
+            class="play-icon"
+            src="https://alex-fortunato.github.io/Website/playbar/assets/playbutton-icon.svg"
+          />
+          <img
+            class="pause-icon"
+            src="https://alex-fortunato.github.io/Website/playbar/assets/pausebutton-icon.svg"
+            style="display: none"
+          />
+        </button>
+        <div class="time-info">
+          <span class="current-time">0:00</span>
+          <span class="total-time">0:00</span>
+        </div>
+        <canvas class="waveform-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <style>
@@ -408,6 +438,7 @@ class AudioPlayerManager {
             player0: "https://dl.dropboxusercontent.com/scl/fi/0oj507yaoqik1k6yfvday/HOME_Theme1_AF_v.1.0.wav?rlkey=glfvk7pq50qhmpsa3r4mco1d0&dl=0",
             player1: "https://dl.dropboxusercontent.com/scl/fi/opjmr67h8c3m07qlegsce/Romance_Theme.wav?rlkey=i4qi6eidry6t860twvkxpv2n4&dl=0",
             player2: "https://dl.dropboxusercontent.com/scl/fi/56xnjclfzf3bqx4aqrpku/Fire-Mexico.wav?rlkey=3y7ui9w8bw4h164gbod2lq36z&dl=0",
+            player3: "https://dl.dropboxusercontent.com/scl/fi/fot8prhp1pj87cvourj2k/Hola_Maria.wav?rlkey=z3luhzmvnrrywlkne2w4p2eko&dl=0",
         };
         return audioSources[playerId] || "";
     }
