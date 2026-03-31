@@ -11,14 +11,6 @@
     </div>
     <div class="visualization-wrapper">
       <div class="visualization-container">
-        <div class="album-art">
-          <img
-            src="https://alex-fortunato.github.io/Website/home-demos/assets/motel-neon-sign.png"
-            alt="Dayspring Motel"
-            width="150"
-            height="150"
-          />
-        </div>
         <button class="play-button">
           <img
             class="play-icon"
@@ -48,14 +40,6 @@
     </div>
     <div class="visualization-wrapper">
       <div class="visualization-container">
-        <div class="album-art">
-          <img
-            src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%20viewBox%3D%220%200%20150%20150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%231a2a2e%22%20rx%3D%228%22%2F%3E%3Ctext%20x%3D%2275%22%20y%3D%2298%22%20font-size%3D%2272%22%20text-anchor%3D%22middle%22%20fill%3D%22%2338B2C3%22%20font-family%3D%22sans-serif%22%3E%E2%99%AA%3C%2Ftext%3E%3C%2Fsvg%3E"
-            alt="Album Art"
-            width="150"
-            height="150"
-          />
-        </div>
         <button class="play-button">
           <img
             class="play-icon"
@@ -117,10 +101,10 @@
   font-family: inherit;
   font-weight: normal;
   font-style: italic;
-  margin-left: 190px;
+  margin-left: 70px;
   margin-top: 20px;
   margin-bottom: 0;
-  width: calc(100% - 230px);
+  width: calc(100% - 110px);
   text-align: center;
   font-size: 1.1em;
   position: relative;
@@ -199,7 +183,7 @@
 
 .play-button {
   position: relative;
-  left: 155px;
+  left: 10px;
   z-index: 10;
   background-color: transparent;
   color: white;
@@ -239,8 +223,8 @@ canvas.waveform-canvas {
 
 @media (max-width: 768px) {
   .song-title {
-    margin-left: 190px;
-    width: calc(100% - 230px);
+    margin-left: 70px;
+    width: calc(100% - 110px);
     text-align: center;
   }
 }
@@ -257,7 +241,7 @@ canvas.waveform-canvas {
     height: 100px;
   }
   .play-button {
-    left: 105px;
+    left: 10px;
     width: 50px;
     height: 50px;
   }
@@ -272,7 +256,9 @@ canvas.waveform-canvas {
   }
   .song-title {
     font-size: 0.9em;
-    margin-left: 10px;
+    margin-left: 60px;
+    width: calc(100% - 80px);
+    text-align: center;
     margin-top: 0;
     margin-bottom: 12px;
   }
@@ -285,7 +271,7 @@ canvas.waveform-canvas {
     height: 80px;
   }
   .play-button {
-    left: 90px;
+    left: 10px;
     width: 40px;
     height: 40px;
   }
@@ -307,7 +293,7 @@ canvas.waveform-canvas {
     height: 70px;
   }
   .play-button {
-    left: 80px;
+    left: 10px;
     width: 35px;
     height: 35px;
   }
@@ -634,7 +620,7 @@ class AudioPlayer {
         const art = this.container.querySelector(".album-art");
         const button = this.container.querySelector(".play-button");
 
-        const artW = art?.offsetWidth || 150;
+        const artW = art ? (art.offsetWidth || 0) : 0;
         const btnW = button?.offsetWidth || 10;
         const margin = -20;
 
