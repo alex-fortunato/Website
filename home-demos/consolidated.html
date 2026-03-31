@@ -350,7 +350,7 @@ class AudioPlayerManager {
                 id: playerId,
                 title: container.querySelector('.song-title').textContent.trim(),
                 audio: this.getSongUrlById(playerId),
-                albumArt: container.querySelector('.album-art img').src
+                albumArt: container.querySelector('.album-art img')?.src || ""
             };
             const player = new AudioPlayer(this, container, songData);
             this.players.set(playerId, player);
